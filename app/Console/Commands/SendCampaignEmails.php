@@ -25,7 +25,7 @@ class SendCampaignEmails extends Command
         $currentDateTime = Carbon::now();
 
         // Fetch campaigns where campaign_time and campaign_date are greater than the current time and date
-        $campaigns = Campaign::where('status','pending')->whereDate('campaign_date', '>=', $currentDateTime->toDateString())->whereTime('campaign_time', '>=', $currentDateTime->toTimeString())->get();
+        $campaigns = Campaign::where('status','pending')->whereDate('campaign_date', '<=', $currentDateTime->toDateString())->whereTime('campaign_time', '<=', $currentDateTime->toTimeString())->get();
         Log::info("campaign loop---------------->".$campaigns);
 
         Log::info("<-------------campaign stating---------------->".$currentDateTime->toDateString().$currentDateTime->toTimeString());
