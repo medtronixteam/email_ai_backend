@@ -9,7 +9,7 @@ class ContactController extends Controller
 {
     public function listContact(){
 
-        $contact= Contact::all();
+        $contact= Contact::latest()->get();
         $response=['status'=>"success",'code'=>200,'data'=>$contact];
         return response($response,$response['code']);
      }

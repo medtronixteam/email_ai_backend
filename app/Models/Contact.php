@@ -9,4 +9,9 @@ class Contact extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function campaign()
+{
+    return $this->belongsTo(Campaign::class);
+}
 }

@@ -7,6 +7,7 @@
 <script src="{{url('assets/js/fonts/custom-font.js')}}"></script>
 <script src="{{url('assets/js/pcoded.js')}}"></script>
 <script src="{{url('assets/js/plugins/feather.min.js')}}"></script>
+
 @stack('js')
 <script>
      layout_change('dark');

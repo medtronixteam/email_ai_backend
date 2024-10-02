@@ -90,7 +90,7 @@ class MainController extends Controller
 }
 public function campaignList()
 {
-    $Campaign=Campaign::all();
+    $Campaign= Campaign::get();
     return view('admin.users.campaigns_list',compact('Campaign'));
 }
 public function show($id)

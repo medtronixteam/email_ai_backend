@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-
-            $table->text('profile_photo')->default('assets/images/user/avatar-1.jpg');
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->string('failed_reason')->nullable();
         });
     }
 
@@ -22,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropIfExists('profile_photo');
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->dropColumn('failed_reason');
         });
     }
 };

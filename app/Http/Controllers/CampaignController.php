@@ -17,11 +17,26 @@ class CampaignController extends Controller
 {
     public function list()
     {
+        $userId = auth('sanctum')->id();
+        $Campaign = Campaign::where('user_id', $userId)->latest()->get();
+        $completedCampaigns = Campaign::where('user_id', $userId)
+                                    ->where('status', 'completed')
+                                    ->count();
+        $pendingCampaigns = Campaign::where('user_id', $userId)
+                                    ->where('status', 'pending')
+                                    ->count();
 
-        $Campaign = Campaign::where('user_id', auth('sanctum')->id())->latest()->get();
-        $response = ['status' => "success", 'code' => 200, 'data' => $Campaign];
+        $response = [
+            'status' => "success",
+            'code' => 200,
+            'total_campaigns' => $Campaign->count(),
+            'completed_campaigns' => $completedCampaigns,
+            'pending_campaigns' => $pendingCampaigns,
+        ];
+
         return response($response, $response['code']);
     }
+
     public function store(Request $request)
     {
 
@@ -122,9 +137,11 @@ class CampaignController extends Controller
         if (!$campaign) {
             return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
         }
-        if ($campaign->status == 'stopped') {
+        if ($campaign->status !== 'started') {
             $campaign->status = 'pending';
-           Contact::where('group_id',$campaign->group_id)->update(['is_sent' => 0]);
+            $campaign->campaign_time = Carbon::now()->format('H:i:s');
+            $campaign->campaign_date = Carbon::now()->format('Y-m-d');
+            Contact::where('group_id',$campaign->group_id)->update(['is_sent' => 0]);
             $emailController = new UserEmailController();
             $emailController->updateSmtpSettings($campaign->id);
             $campaign->save();
@@ -195,7 +212,7 @@ public function update(Request $request, $id)
             return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
         }
         if ($campaign->status = 'started') {
-            return response(['message' => 'Started campaigns can not be deleted', 'status' => 'error', 'code' => 403]);
+            return response(['message' => 'Started campaigns can not be deleted', 'status' => 'error', 'code' => 500]);
         }
         $campaign->delete();
         return response(['message' => 'Campaign has been deleted', 'status' => 'success', 'code' => 200]);

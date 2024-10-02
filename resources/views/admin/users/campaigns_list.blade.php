@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 @push('css')
     <link rel="stylesheet" href="{{ url('assets/css/plugins/dataTables.bootstrap5.min.css') }}">
-    <!-- [Page specific CSS] end -->
 @endpush
+
 @section('content')
     <div class="page-header">
         <div class="page-block">
@@ -33,18 +33,31 @@
                                 <th>Group Name</th>
                                 <th>User Name</th>
                                 <th>Status</th>
+                                <th>Contacts</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($Campaign as $Campaign)
+                            @foreach ($Campaign as $campaign)
                                 <tr>
-                                    <td>{{ $Campaign->name }}</td>
-                                    <td>{{ $Campaign->group->name }}</td>
-                                    <td>{{ $Campaign->user->name }}</td>
-                                    <td>{{ $Campaign->status }}</td>
+                                    <td>{{ $campaign->name }}</td>
+                                    <td>{{ $campaign->group->name }}</td>
+                                    <td>{{ $campaign->user->name }}</td>
+                                    <td>{{ $campaign->status }}</td>
                                     <td>
-                                        <a href="{{ route('campaign.show', $Campaign->id) }}" class="btn btn-primary">
+                                        <ul>
+                                            @php
+                                              $totalSent=App\Models\Contact::where('group_id',($campaign->group->id)?$campaign->group->id:0)->where('is_sent',1)->count();
+                                              $is_failed=App\Models\Contact::where('group_id',($campaign->group->id)?$campaign->group->id:0)->where('is_failed',1)->count();
+                                            @endphp
+                                              <li>
+                                                    Sent: {{ $totalSent}} |
+                                                    Failed: {{ $is_failed}}
+                                                </li>
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('campaign.show', $campaign->id) }}" class="btn btn-primary">
                                             View
                                         </a>
                                     </td>

@@ -87,6 +87,7 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Status</th>
+                                    <th>Failed reason</th>
                                     <th>Created At</th>
                                 </tr>
                             </thead>
@@ -97,12 +98,13 @@
                                     <td>{{ $contact->name }}</td>
                                     <td>{{ $contact->email }}</td>
                                     <td>
-                                        @if ($Campaign->status == 'complete')
+                                        @if ($Campaign->status == 'completed')
                                             Sent
                                         @else
                                             Failed
                                         @endif
                                     </td>
+                                    <td>{{ $contact->failed_reason }}</td>
                                     <td>{{ $contact->created_at }}</td>
                                 </tr>
                             @endforeach

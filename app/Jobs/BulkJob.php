@@ -54,7 +54,7 @@ class BulkJob implements ShouldQueue
                 Log::error('No config found for ID: ' . $this->configId);
                 return;
             }
-           
+
              config([
                 'mail.mailers.smtp.host' => $config->main_host,
                 'mail.mailers.smtp.port' => $config->main_port,
@@ -74,7 +74,7 @@ class BulkJob implements ShouldQueue
             //code...
         } catch (\Throwable $th) {
 
-            $emailData->update(['is_sent' => 0, 'is_failed' => 1,'job_id'=>$jobId]);
+            $emailData->update(['is_sent' => 0, 'is_failed' => 1,'job_id'=>$jobId,'failed_reason'=>$th->getMessage()]);
             Log::error('Mail failed to send. Error: ' . $th->getMessage());
         }
     }
