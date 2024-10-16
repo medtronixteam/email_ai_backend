@@ -20,18 +20,18 @@ jobs:
 
     - name: SSH into server and run commands
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@52.23.130.141 "
+        ssh -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} "
           sudo bash -c '
-            cd /root/email_ai_solutions/email_ai_backend
+            cd /root/11_email_ai/email_ai_backend
             
             # Pull the latest code
             git pull origin main
             
-            # Go one step back and build the frontend
+            # Go one step back and build the backend
             cd ..
             docker compose build backend
             
-            # Start the frontend in detached mode
+            # Start the backend in detached mode
             docker compose up backend -d
           '
         "
