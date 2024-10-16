@@ -13,25 +13,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH for GitHub
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+    - name: Install expect
+      run: sudo apt-get install -y expect
 
-    - name: SSH into server and run commands
+    - name: SSH into server and run commands using password
       run: |
-        ssh -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }} "
-          sudo bash -c '
-            cd /root/11_email_ai/email_ai_backend
-            
-            # Pull the latest code
-            git pull origin main
-            
-            # Go one step back and build the backend
-            cd ..
-            docker compose build backend
-            
-            # Start the backend in detached mode
-            docker compose up backend -d
-          '
-        "
+        expect <<EOF
+        spawn ssh -o StrictHostKeyChecking=no root@${{ secrets.SERVER_IP }}
+        expect "password:"
+        send "${{ secrets.SSH_PASSWORD }}\r"
+        expect "#"
+        send "cd /root/11_email_ai/email_ai_backend\r"
+        send "git pull origin main\r"
+        send "cd ..\r"
+        send "docker compose build backend\r"
+        send "docker compose up backend -d\r"
+        expect "#"
+        send "exit\r"
+        EOF
