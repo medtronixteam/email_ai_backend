@@ -8,7 +8,6 @@ use App\Models\Contact;
 use App\Models\Campaign;
 use App\Models\User;
 use App\Models\UserData;
-use App\Models\User;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
