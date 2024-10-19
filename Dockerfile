@@ -34,4 +34,7 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 EXPOSE 8000
 
 # Run migrations and seed the database only if tables do not exist
-CMD ["sh", "-c", "if php artisan migrate:status | grep -q 'No migrations'; then echo 'Running migrations...'; php artisan migrate --seed; else echo 'Migrations already applied, skipping...'; fi; (php artisan schedule:work &) && php artisan serve --host=0.0.0.0 --port=8000"]
+CMD ["sh", "-c", "if php artisan migrate:status | grep -q 'No migrations'; then echo 'Running migrations...'; php artisan migrate --seed; else echo 'Migrations already applied, skipping...'; fi; \
+(php artisan schedule:work &) && \
+(php artisan queue:work &) && \
+php artisan serve --host=0.0.0.0 --port=8000"]
