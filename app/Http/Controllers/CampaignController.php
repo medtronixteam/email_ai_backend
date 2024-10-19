@@ -25,6 +25,9 @@ class CampaignController extends Controller
         $pendingCampaigns = Campaign::where('user_id', $userId)
                                     ->where('status', 'pending')
                                     ->count();
+        $failedCampaigns = Campaign::where('user_id', $userId)
+                                    ->where('status', 'failed')
+                                    ->count();
 
 
         $response = [
@@ -33,6 +36,7 @@ class CampaignController extends Controller
             'total_campaigns' => $Campaign->count(),
             'completed_campaigns' => $completedCampaigns,
             'pending_campaigns' => $pendingCampaigns,  'data'=> $Campaign,
+            'failed_campaigns' => $failedCampaigns,  'data'=> $Campaign,
         ];
 
         return response($response, $response['code']);

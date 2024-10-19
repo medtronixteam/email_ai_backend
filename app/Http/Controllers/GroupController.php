@@ -81,12 +81,16 @@ class GroupController extends Controller
                     ],500);
                 }
             //    return response($emails, 200);
+            $group = Group::where('name', $request->name)
+            ->where('user_id', auth('sanctum')->id())
+            ->first();
 
+            if (!$group) {
                 $group= Group::create([
                     'name'=>$request->name,
                     'status'=>1,
                     'user_id'=>auth('sanctum')->id(),
-                ]);
+                ]); }
                 foreach ($emails as $key => $value) {
                     Contact::create([
                         'group_id'=>$group->id,
