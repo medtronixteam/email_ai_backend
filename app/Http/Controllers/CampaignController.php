@@ -204,7 +204,7 @@ public function update(Request $request, $id)
         if (!$campaign) {
             return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
         }
-        if ($campaign->status = 'started') {
+        if ($campaign->status == 'started') {
             return response(['message' => 'Started campaigns can not be deleted', 'status' => 'error', 'code' => 500]);
         }
         $campaign->delete();
