@@ -22,7 +22,7 @@ class SendCampaignEmails extends Command
 
     public function handle()
     {
-        $currentDateTime = Carbon::now();
+        $currentDateTime = Carbon::now()->setTimezone(config('app.timezone'));
 
         // Fetch campaigns where campaign_time and campaign_date are greater than the current time and date
         $campaigns = Campaign::where('status','pending')->whereDate('campaign_date', '<=', $currentDateTime->toDateString())->whereTime('campaign_time', '<=', $currentDateTime->toTimeString())->get();

@@ -51,6 +51,7 @@ public function changeTimezone(Request $request)
         $response = [
             'message' => 'Timezone has been changed',
             'status' => 'success',
+            'timezone'=>config('app.timezone'),
             'code' => 200,
         ];
 
