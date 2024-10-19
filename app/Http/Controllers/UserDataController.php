@@ -68,7 +68,7 @@ public function changePassword(Request $request)
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 500);
         }
-        $user = auth('sanctum');
+        $user = auth('sanctum')->user();
         if (!Hash::check($request->old_password, $user->password)) {
             return response()->json(['error' => 'Old password does not match'], 500);
         }
