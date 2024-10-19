@@ -64,7 +64,10 @@ Route::get('/auth/google', [GoogleController::class, 'generateUrl']);
 
 // user data
 Route::get('dashboard', [UserDataController::class, 'getUserSummary']);
+Route::post('change-password', [UserDataController::class, 'changePassword']);
 Route::post('timezone', [UserDataController::class, 'changeTimezone']);
+
+
 });
 
 Route::middleware('throttle:60,1')->group(function () {

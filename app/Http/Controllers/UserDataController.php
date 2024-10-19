@@ -8,6 +8,11 @@ use App\Models\Contact;
 use App\Models\Campaign;
 use App\Models\User;
 use App\Models\UserData;
+use App\Models\User;
+use Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 class UserDataController extends Controller
 {
     public function getUserSummary()
@@ -31,26 +36,44 @@ class UserDataController extends Controller
         ]);
     }
 
-    public function changeTimezone(Request $request)
+public function changeTimezone(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'timezone' => 'required',
+    ]);
+    if ($validator->fails()) {
+
+        $response = ['message' => $validator->messages()->first(),
+            'status' => 'error', 'code' => 500];
+
+    }else{
+
+        User::find(auth('sanctum')->id())->update(['timezone'=>$request->timezone]);
+        $response = [
+            'message' => 'Timezone has been changed',
+            'status' => 'success',
+            'code' => 200,
+        ];
+
+    }
+    return response($response, $response['code']);
+}
+public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'timezone' => 'required',
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
         ]);
+
         if ($validator->fails()) {
-
-            $response = ['message' => $validator->messages()->first(),
-                'status' => 'error', 'code' => 500];
-
-        }else{
-
-            User::find(auth('sanctum')->id())->update(['timezone'=>$request->timezone]);
-            $response = [
-                'message' => 'Timezone has been changed',
-                'status' => 'success',
-                'code' => 200,
-            ];
-
+            return response()->json(['error' => $validator->errors()], 500);
         }
-        return response($response, $response['code']);
+        $user = Auth::user();
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json(['error' => 'Old password does not match'], 500);
+        }
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        return response()->json(['message' => 'Password changed successfully'], 200);
     }
 }

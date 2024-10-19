@@ -19,12 +19,20 @@ class CampaignController extends Controller
     {
         $userId = auth('sanctum')->id();
         $Campaign = Campaign::where('user_id', $userId)->latest()->get();
+        $completedCampaigns = Campaign::where('user_id', $userId)
+                                    ->where('status', 'completed')
+                                    ->count();
+        $pendingCampaigns = Campaign::where('user_id', $userId)
+                                    ->where('status', 'pending')
+                                    ->count();
 
 
         $response = [
             'status' => "success",
             'code' => 200,
-            'data' => $Campaign,
+            'total_campaigns' => $Campaign->count(),
+            'completed_campaigns' => $completedCampaigns,
+            'pending_campaigns' => $pendingCampaigns,  'data'=> $Campaign,
         ];
 
         return response($response, $response['code']);
