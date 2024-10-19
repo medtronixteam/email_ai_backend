@@ -22,20 +22,23 @@ class SendCampaignEmails extends Command
 
     public function handle()
     {
-        $currentDateTime = Carbon::now()->setTimezone(config(['app.timezone']));
-
+     
         // Fetch campaigns where campaign_time and campaign_date are greater than the current time and date
-        $campaigns = Campaign::where('status','pending')->whereDate('campaign_date', '<=', $currentDateTime->toDateString())->whereTime('campaign_time', '<=', $currentDateTime->toTimeString())->get();
+        $campaigns = Campaign::where('status','pending')->get();
         Log::info("campaign loop---------------->".$campaigns);
 
-        Log::info("<-------------campaign stating---------------->".$currentDateTime->toDateString().$currentDateTime->toTimeString());
+        //Log::info("<-------------campaign stating---------------->".$currentDateTime->toDateString().$currentDateTime->toTimeString());
         $emailController = new UserEmailController();
        // $googleController = new GoogleController();
 
         foreach ($campaigns as $campaign) {
             Log::info("campaign loop---------------->".$campaign->id);
 
-            $emailController->updateSmtpSettings($campaign->id);
+            $currentDateTime = Carbon::now()->setTimezone($campaign->user->timezone);
+            if($campaign->campaign_date<=$currentDateTime->toDateString() && $campaign->campaign_time<=$currentDateTime->toTimeString()){
+                $emailController->updateSmtpSettings($campaign->id);
+            }   
+         
             // if($campaign->email_host == 'gmail_auth'){
 
             //     $googleController->sendGmails($campaign->id);

@@ -79,7 +79,3 @@ public function changePassword(Request $request)
         return response()->json(['message' => 'Password changed successfully'], 200);
     }
 }
-<<<<<<< HEAD
-//
-=======
->>>>>>> 2e9b62007faa79e9f7767d8b5885a3364586a3c6
