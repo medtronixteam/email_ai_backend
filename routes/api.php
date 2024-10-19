@@ -66,6 +66,11 @@ Route::get('/auth/google', [GoogleController::class, 'generateUrl']);
 Route::get('dashboard', [UserDataController::class, 'getUserSummary']);
 });
 
-Route::post('emails', [EmailController::class, 'store']);
-Route::get('emails',[EmailController::class,'list']);
-Route::post('profile-url', [EmailController::class, 'checkProfileUrl']);
+Route::middleware('throttle:60,1')->group(function () {
+    Route::post('emails', [EmailController::class, 'store']);
+    Route::post('emails/bulk', [EmailController::class, 'bulk']);
+    Route::get('emails',[EmailController::class,'list']);
+    Route::get('emails/scrapped',[EmailController::class,'scrapped']);
+    Route::post('profile-url', [EmailController::class, 'checkProfileUrl']);
+});
+

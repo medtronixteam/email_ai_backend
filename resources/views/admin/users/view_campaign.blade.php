@@ -76,8 +76,24 @@
     <div class="row mt-4">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Group Details</h2>
+                <div class="card-header d-flex justify-content-between">
+                    <h2 class="card-title">Emails Detail</h2>
+                    <div class="d-flex">
+                        <div class="card me-2 bg-behance" style="width: 150px; height:80px;">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Sent</h5>
+                                <p class="card-text">{{ $Campaign->group->contacts->where('is_sent', true)->count() }}</p>
+                            </div>
+                        </div>
+
+                        <div class="card bg-danger" style="width: 150px; height:80px;">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Failed</h5>
+                                <p class="card-text">{{ $Campaign->group->contacts->where('is_failed', true)->count() }}</p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -87,18 +103,17 @@
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Status</th>
-                                    <th>Failed reason</th>
+                                    <th>Failed Reason</th>
                                     <th>Created At</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                                 @foreach ($Campaign->group->contacts as $contact)
                                 <tr>
                                     <td>{{ $contact->name }}</td>
                                     <td>{{ $contact->email }}</td>
                                     <td>
-                                        @if ($Campaign->status == 'completed')
+                                        @if ($contact->is_sent)
                                             Sent
                                         @else
                                             Failed
@@ -107,8 +122,7 @@
                                     <td>{{ $contact->failed_reason }}</td>
                                     <td>{{ $contact->created_at }}</td>
                                 </tr>
-                            @endforeach
-
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -116,4 +130,5 @@
             </div>
         </div>
     </div>
+
 @endsection
