@@ -48,6 +48,8 @@ public function changeTimezone(Request $request)
     }else{
 
         User::find(auth('sanctum')->id())->update(['timezone'=>$request->timezone]);
+        config(['app.timezone' => $request->timezone]);
+        date_default_timezone_set($request->timezone);
         $response = [
             'message' => 'Timezone has been changed',
             'status' => 'success',
