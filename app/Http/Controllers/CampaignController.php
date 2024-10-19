@@ -210,5 +210,11 @@ public function update(Request $request, $id)
         $campaign->delete();
         return response(['message' => 'Campaign has been deleted', 'status' => 'success', 'code' => 200]);
     }
+        function convertToUserTimezone($timestamp, $timezone = null)
+    {
+        $timezone = $timezone ?: config('app.timezone');
+        return Carbon::parse($timestamp)->setTimezone($timezone);
+    }
+
 
 }

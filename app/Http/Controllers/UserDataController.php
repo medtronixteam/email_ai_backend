@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Contact;
 use App\Models\Campaign;
+use App\Models\User;
 use App\Models\UserData;
 class UserDataController extends Controller
 {
@@ -28,5 +29,28 @@ class UserDataController extends Controller
             'completed_campaigns' => $completedCampaigns,
             'started_campaigns' => $startedCampaigns,
         ]);
+    }
+
+    public function changeTimezone(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'timezone' => 'required',
+        ]);
+        if ($validator->fails()) {
+
+            $response = ['message' => $validator->messages()->first(),
+                'status' => 'error', 'code' => 500];
+
+        }else{
+
+            User::find(auth('sanctum')->id())->update(['timezone'=>$request->timezone]);
+            $response = [
+                'message' => 'Timezone has been changed',
+                'status' => 'success',
+                'code' => 200,
+            ];
+
+        }
+        return response($response, $response['code']);
     }
 }

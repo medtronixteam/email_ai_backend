@@ -29,6 +29,7 @@ class User extends Authenticatable
         'username',
         'profile_photo',
         'number',
+        'timezone',
     ];
 
     /**
