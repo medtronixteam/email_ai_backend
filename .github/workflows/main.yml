@@ -21,11 +21,11 @@ jobs:
         echo "$SSH_KEY" > /tmp/deploy_key
         chmod 600 /tmp/deploy_key
         ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no contact@$SERVER_IP <<EOF
-          cd /home/contact/Email_Ai_Salution
+          cd /home/contact/email_ai_backend
           git pull origin main
           cd ..
-          sudo docker compose build frontend
-          sudo docker compose up frontend -d
+          sudo docker compose build backend
+          sudo docker compose up backend -d
           exit
         EOF
 
