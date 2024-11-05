@@ -1,1 +1,2 @@
-{!! $emailBody !!}
+
+{!!str_replace('&nbsp;',' ',$emailBody)!!}
