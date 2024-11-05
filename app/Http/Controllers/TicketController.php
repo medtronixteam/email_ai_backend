@@ -31,7 +31,7 @@ class TicketController extends Controller
             ]);
 
             $response = [
-                'message' => "Tick has been generated Successfully.",
+                'message' => "Ticket has been generated Successfully.",
                 'status' => 'success',
                 'code' => 200,
 
