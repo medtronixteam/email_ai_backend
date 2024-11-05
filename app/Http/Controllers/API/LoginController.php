@@ -51,7 +51,7 @@ public function login(Request $request)
         ], 401);
     }
 }
-    function register(Request $request) {
+function register(Request $request) {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users',
             'password' => 'required',
