@@ -64,11 +64,16 @@ class BulkJob implements ShouldQueue
             ]);
 
               // Send the email
-            Mail::raw($this->emailBody, function ($message) {
-                $message->to($this->emailAddress)
-                        ->subject($this->subject);
-            });
+            // Mail::raw($this->emailBody, function ($message) {
+            //     $message->to($this->emailAddress)
+            //             ->subject($this->subject);
+            // });
 
+              // Send the HTML email
+        Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody], function ($message) {
+            $message->to($this->emailAddress)
+                    ->subject($this->subject);
+        });
             $emailData->update(['is_sent' => 1, 'is_failed' => 0,'job_id'=>$jobId]);
             Log::info('____________Success________________ ');
             //code...
