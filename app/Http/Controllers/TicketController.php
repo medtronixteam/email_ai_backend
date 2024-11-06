@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use Illuminate\Http\Request;
-
+use Validator;
 class TicketController extends Controller
 {
     public function store(Request $request)
