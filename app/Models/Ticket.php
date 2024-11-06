@@ -12,5 +12,6 @@ class Ticket extends Model
     public function messages()  {
         return $this->hasMany(TicketMessage::class);
     }
+      protected $guarded=['id'];
 
 }
