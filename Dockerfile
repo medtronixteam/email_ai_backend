@@ -33,5 +33,5 @@ RUN chown -R www-data:www-data storage bootstrap/cache
 # Expose port 8000 for the application
 EXPOSE 8000
 
-# Start the application with migrations and seeding, and queue & schedule
-CMD ["sh", "-c", "php artisan migrate --seed && (php artisan schedule:work &) && (php artisan queue:work &) && php artisan serve --host=0.0.0.0 --port=8000"]
+# Start the application without running migrations or seeding
+CMD ["sh", "-c", "(php artisan schedule:work &) && (php artisan queue:work &) && php artisan serve --host=0.0.0.0 --port=8000"]
