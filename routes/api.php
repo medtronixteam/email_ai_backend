@@ -10,6 +10,7 @@ use App\Http\Controllers\AddUserController;
 use App\Http\Controllers\UserEmailController;
 use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\TicketController;
 /*
@@ -74,6 +75,10 @@ Route::post('/tickets', [TicketController::class, 'store']);
 Route::get('/tickets/{id}', [TicketController::class, 'listById']);
 
 
+//atachment
+
+Route::post('/attachments', [AttachmentController::class, 'upload']);
+Route::get('/attachments', [AttachmentController::class, 'list']);
 });
 
 Route::middleware('throttle:60,1')->group(function () {
