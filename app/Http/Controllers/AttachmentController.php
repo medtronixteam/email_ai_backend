@@ -12,7 +12,7 @@ class AttachmentController extends Controller
     public function upload(Request $request)
     {
         $request->validate([
-            'file_name' => 'mimes:jpg,jpeg,png,pdf|max:2048',
+            'file_name' => 'mimes:jpg,jpeg,png,pdf',
         ]);
 
         if ($request->hasFile('file_name')) {
