@@ -12,6 +12,7 @@ use App\Http\Controllers\UserDataController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TicketController;
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,10 @@ Route::get('/tickets/{id}', [TicketController::class, 'listById']);
 
 Route::post('/attachments', [AttachmentController::class, 'upload']);
 Route::get('/attachments', [AttachmentController::class, 'list']);
+
+//plans
+Route::get('/plans', [PlanController::class, 'index']);
+Route::post('/plans', [PlanController::class, 'createPlans']);
 });
 
 Route::middleware('throttle:60,1')->group(function () {
