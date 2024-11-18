@@ -14,6 +14,7 @@ use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\SubscriptionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -84,6 +85,8 @@ Route::get('/attachments', [AttachmentController::class, 'list']);
 //plans
 Route::get('/plans', [PlanController::class, 'index']);
 Route::post('/plans', [PlanController::class, 'createPlans']);
+Route::post('/subscribe', [SubscriptionController::class, 'subscribePlan']);
+
 });
 
 Route::middleware('throttle:60,1')->group(function () {
