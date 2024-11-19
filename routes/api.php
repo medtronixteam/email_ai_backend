@@ -76,6 +76,7 @@ Route::post('timezone', [UserDataController::class, 'changeTimezone']);
 
 Route::get('/tickets', [TicketController::class, 'list']);
 Route::post('/tickets', [TicketController::class, 'store']);
+Route::post('/tickets/message', [TicketController::class, 'message']);
 Route::get('/tickets/{id}', [TicketController::class, 'listById']);
 
 

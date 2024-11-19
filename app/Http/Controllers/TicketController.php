@@ -66,4 +66,32 @@ class TicketController extends Controller
 
         return response($response, $response['code']);
     }
+    public function message(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'ticket_id' => 'required',
+            'description' => 'required|max:100',
+
+        ]);
+        if ($validator->fails()) {
+
+            $response = ['message' => $validator->messages()->first(),
+                'status' => 'error', 'code' => 500];
+
+        } else {
+            
+            $ticket = TicketMessage::create([
+                'ticket_id' => $request->ticket_id,
+                'description' => $request->description,
+            ]);
+
+            $response = [
+                'message' => "Message has been sent Successfully.",
+                'status' => 'success',
+                'code' => 200,
+
+            ];
+        }
+        return response($response, $response['code']);
+    }
 }
