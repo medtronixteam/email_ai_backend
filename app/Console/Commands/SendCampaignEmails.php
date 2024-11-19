@@ -24,8 +24,7 @@ class SendCampaignEmails extends Command
     {
      
         // Fetch campaigns where campaign_time and campaign_date are greater than the current time and date
-        $campaigns = Campaign::get();
-        //where('status','pending')->
+        $campaigns = Campaign::where('status','pending')->get();
         Log::info("campaign loop---------------->".$campaigns);
 
         //Log::info("<-------------campaign stating---------------->".$currentDateTime->toDateString().$currentDateTime->toTimeString());
