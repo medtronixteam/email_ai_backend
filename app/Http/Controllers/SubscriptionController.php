@@ -11,7 +11,6 @@ class SubscriptionController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'plan_id' => 'required|exists:plans,id',
-            'user_id' => 'required|exists:users,id',
         ]);
     
         if ($validator->fails()) {
@@ -21,7 +20,7 @@ class SubscriptionController extends Controller
         }
     
  
-        $existingSubscription = Subscription::where('user_id', $request->user_id)
+        $existingSubscription = Subscription::where('user_id', auth('sanctum')->id())
                                             ->where('plan_id', $request->plan_id)
                                             ->first();
     
@@ -33,7 +32,7 @@ class SubscriptionController extends Controller
     
         try {
             $subscription = Subscription::create([
-                'user_id' => $request->user_id,
+                'user_id' =>auth('sanctum')->id(),
                 'plan_id' => $request->plan_id,
                 'activation_date' => now(),
             ]);

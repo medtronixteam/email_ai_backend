@@ -24,7 +24,8 @@ class SendCampaignEmails extends Command
     {
      
         // Fetch campaigns where campaign_time and campaign_date are greater than the current time and date
-        $campaigns = Campaign::where('status','pending')->get();
+        $campaigns = Campaign::get();
+        //where('status','pending')->
         Log::info("campaign loop---------------->".$campaigns);
 
         //Log::info("<-------------campaign stating---------------->".$currentDateTime->toDateString().$currentDateTime->toTimeString());
@@ -33,8 +34,11 @@ class SendCampaignEmails extends Command
 
         foreach ($campaigns as $campaign) {
             Log::info("campaign loop---------------->".$campaign->id);
-
+            Log::info("User Timezone---------------->".$campaign->user->timezone);
+ 
             $currentDateTime = Carbon::now()->setTimezone($campaign->user->timezone);
+            Log::info("After change Timezone---------------->".$currentDateTime);
+         
             if($campaign->campaign_date<=$currentDateTime->toDateString() && $campaign->campaign_time<=$currentDateTime->toTimeString()){
                 $emailController->updateSmtpSettings($campaign->id);
             }   

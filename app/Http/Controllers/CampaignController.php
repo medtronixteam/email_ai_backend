@@ -103,6 +103,13 @@ class CampaignController extends Controller
                 ];
                 return response($response, $response['code']);
             }
+           
+            $attachments=null;
+            if($request->attachments!="[]"){
+               $attachments=$request->attachments;
+            }
+
+          
             $campaign = Campaign::create([
                 'name' => $request->name,
                 'group_id' => $request->group_id,
@@ -112,6 +119,7 @@ class CampaignController extends Controller
                 'subject' => $request->subject,
                 'message' => $request->message,
                 'status' => 'pending',
+                'attachments' => $attachments,
                 'user_id' => auth('sanctum')->id(),
             ]);
             if ($request->campaign_time <= $currentDateTime->toTimeString() && $request->campaign_date <= $currentDateTime->toDateString()) {

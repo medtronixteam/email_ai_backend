@@ -26,7 +26,7 @@ class AttachmentController extends Controller
             ]);
 
 
-            return response()->json(['message' => 'File uploaded successfully', 'attachment' => $attachment], 201);
+            return response()->json(['message' => 'File uploaded successfully', 'attachment' => $attachment], 200);
         }
         return response()->json(['message' => 'No file was uploaded or file upload failed'], 400);
     }

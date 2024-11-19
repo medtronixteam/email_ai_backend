@@ -109,7 +109,8 @@ class UserEmailController extends Controller
         }else{
             $configData = $config->first();
             Log::info("<--controller-----email config approved-------->");
-            $emails = Group::join('contacts', 'groups.id', '=', 'contacts.group_id')->where('groups.id', $compains->group_id)->where('contacts.is_sent',0);
+            $emails = Group::join('contacts', 'groups.id', '=', 'contacts.group_id')->where('groups.id', $compains->group_id);
+            //->where('contacts.is_sent',0)
             if($emails->count() > 0){
                 $compains->update(['status' => 'started']);
 
@@ -117,7 +118,7 @@ class UserEmailController extends Controller
 
                         Log::info("Sending Job for email" .$email->email);
                         //SendEmailJob::dispatch($email->id, $configData->id,$compains->message);
-                       $jobBulk=BulkJob::dispatch($email->id,$configData->id,$compains->message,$compains->subject);
+                       $jobBulk=BulkJob::dispatch($email->id,$configData->id,$compains->message,$compains->subject,$compains->attachments);
 
                     }
 

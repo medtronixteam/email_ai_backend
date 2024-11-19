@@ -11,6 +11,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\AttachmentMail;
+use App\Models\Attachment;
 
 class BulkJob implements ShouldQueue
 {
@@ -20,15 +22,17 @@ class BulkJob implements ShouldQueue
     public $emailAddress;
     public $emailBody;
     public $subject;
+    public $attachments;
     /**
      * Create a new job instance.
      */
-    public function __construct($emailId,$configId,$emailBody,$subject)
+    public function __construct($emailId,$configId,$emailBody,$subject,$attachments)
     {
         $this->configId=$configId;
         $this->emailId=$emailId;
         $this->emailBody=$emailBody;
         $this->subject=$subject;
+        $this->attachments=$attachments;
     }
 
     /**
@@ -37,6 +41,9 @@ class BulkJob implements ShouldQueue
     public function handle(): void
     {
         $jobId = $this->job->getJobId();
+        if($jobId == ''){
+            $jobId=null;
+        }
         Log::info('BulkJob started. Job ID: ' . $jobId);
         Log::info('yes did'.$this->emailId);
         Log::info('____________Sarting________________ ');
@@ -69,11 +76,36 @@ class BulkJob implements ShouldQueue
             //             ->subject($this->subject);
             // });
 
-              // Send the HTML email
-        Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody], function ($message) {
-            $message->to($this->emailAddress)
-                    ->subject($this->subject);
-        });
+        
+            // Send the HTML email
+            Log::info('Attachment________________ '.$this->attachments);
+                if($this->attachments=="[]" || $this->attachments==null){
+                    Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody], function ($message) {
+                        $message->to($this->emailAddress)
+                                ->subject($this->subject);
+                    });
+                }else{  
+                    $details = [
+                        'subject' => $this->subject,
+                        'body' => $this->emailBody,
+                    ];
+                    $filePaths = [];
+                    $allAttachments = json_decode($this->attachments, true);
+    
+                    if (is_array($allAttachments)) {
+                        foreach ($allAttachments as $key => $value) {
+                            $attachment = Attachment::find($value);
+                            if ($attachment) {
+                                $filePaths[$key] = storage_path('app/public/attachments/' . $attachment->file_name);
+                            }
+                        }
+                    }
+                    Log::info('File paths: ' . json_encode($filePaths));
+                    Mail::to($this->emailAddress)->send(new AttachmentMail($details, $filePaths));
+
+                }
+         
+
             $emailData->update(['is_sent' => 1, 'is_failed' => 0,'job_id'=>$jobId]);
             Log::info('____________Success________________ ');
             //code...

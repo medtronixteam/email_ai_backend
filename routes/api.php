@@ -15,7 +15,9 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\PaymentController;
 /*
+
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
@@ -87,13 +89,12 @@ Route::get('/plans', [PlanController::class, 'index']);
 Route::post('/plans', [PlanController::class, 'createPlans']);
 Route::post('/subscribe', [SubscriptionController::class, 'subscribePlan']);
 
+
+Route::post('/payment/intent', [PaymentController::class, 'createPaymentIntent']);
+
+
+
 });
 
-Route::middleware('throttle:60,1')->group(function () {
-    Route::post('emails', [EmailController::class, 'store']);
-    Route::post('emails/bulk', [EmailController::class, 'bulk']);
-    Route::get('emails',[EmailController::class,'list']);
-    Route::get('emails/scrapped',[EmailController::class,'scrapped']);
-    Route::post('profile-url', [EmailController::class, 'checkProfileUrl']);
-});
+
 
