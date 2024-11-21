@@ -146,8 +146,9 @@ public function store(Request $request)
     }
    public function ticketmessage($ticketId)
     {
+        $messages = TicketMessage::where('ticket_id', $ticketId)->orderBy('created_at', 'asc')->get();
         $ticketmessage = TicketMessage::findOrFail($ticketId);
-        return view('admin.users.support', compact('ticketmessage'));
+        return view('admin.users.support', compact('ticketmessage','messages'));
     }
 
     public function ticketreply(Request $request, $messageId)
