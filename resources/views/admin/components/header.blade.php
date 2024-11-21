@@ -146,10 +146,13 @@
                         </div>
                     </div>
                 </li>
-                <li class="dropdown pc-h-item header-user-profile"><a
+                <li class="dropdown pc-h-item header-user-profile">
+                    <a
                         class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#"
-                        role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false"><img
-                            src="{{url(auth()->user()->profile_photo)}}" alt="user-image" class="user-avtar"></a>
+                        role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
+                        <img
+                            src="{{url(auth()->user()->profile_photo)}}" alt="user-image" class="user-avtar">
+                        </a>
                     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                         <div class="dropdown-header d-flex align-items-center justify-content-between">
                             <h5 class="m-0">Profile</h5>
