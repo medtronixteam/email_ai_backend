@@ -40,6 +40,12 @@ Route::post('profile/reset-name', [MainController::class, 'resetName'])->name('p
 Route::get('camapign/list', [MainController::class, 'campaignList'])->name('admin.users.campaigns_list');
 Route::get('campaign/{id}', [MainController::class, 'show'])->name('campaign.show');
 
+Route::get('ticket/list', [MainController::class, 'ticketList'])->name('admin.users.tickets');
+Route::get('ticket/message/{ticketId}', [MainController::class, 'ticketmessage'])->name('admin.ticket.message');
+Route::post('ticket/reply/{messageId}', [MainController::class, 'ticketreply'])->name('admin.support.reply');
+Route::get('ticket/support', [MainController::class, 'support'])->name('admin.users.reply');
+Route::post('ticket/closed/{ticketId}', [MainController::class, 'ticketclose'])->name('admin.tickets.close');
+Route::post('ticket/open/{ticketId}', [MainController::class, 'ticketopen'])->name('admin.tickets.open');
 
 
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);

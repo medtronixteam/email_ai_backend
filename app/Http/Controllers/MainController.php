@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\Contact;
 use App\Models\Campaign;
+use App\Models\Ticket;
+use App\Models\TicketMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -115,5 +117,57 @@ public function store(Request $request)
     return redirect()->route('admin.users.list')->with('success', 'User created successfully.');
 }
 
+ public function ticketList()
+    {
+        $tickets= Ticket::get();
+    return view('admin.users.ticket_list',compact('tickets'));
+    }
+    public function ticketclose($ticketId)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+        $ticket->status = 'closed';
+        $ticket->save();
 
+        return redirect()->back()->with('success', 'Ticket closed successfully.');
+    }
+    public function ticketopen($ticketId)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+        $ticket->status = 'open';
+        $ticket->save();
+
+        return redirect()->back()->with('success', 'Ticket opened successfully.');
+
+    }
+
+    public function support()
+    {
+        return view('admin.users.support');
+    }
+   public function ticketmessage($ticketId)
+    {
+        $messages = TicketMessage::where('ticket_id', $ticketId)->orderBy('created_at', 'asc')->get();
+        $ticketmessage = TicketMessage::findOrFail($ticketId);
+        return view('admin.users.support', compact('ticketmessage','messages'));
+    }
+
+    public function ticketreply(Request $request, $messageId)
+    {
+        $valid = $request->validate([
+            'message' => 'required',
+        ]);
+        $adminCount = TicketMessage::where('ticket_id', $request->ticket_id)
+            ->whereNotNull('is_admin')
+            ->count();
+    
+   
+        $ticket = TicketMessage::create([
+            'ticket_id' => $request->ticket_id,
+            'description' => $request->message,
+            'is_admin' => $adminCount = 1,
+        ]);
+        flashy()->info('Message sent successfully.', '#');
+        return redirect()->back();
+    }
+    
 }
