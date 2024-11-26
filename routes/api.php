@@ -37,8 +37,8 @@ Route::post('auth/login', [LoginController::class, 'login']);
 Route::post('auth/register', [LoginController::class, 'register']);
 
 
-Route::post('/send-verification-code', [EmailVerificationController::class, 'sendVerificationCode']);
-Route::post('/verify-code', [EmailVerificationController::class, 'verifyCode']);
+Route::post('/verification/code', [EmailVerificationController::class, 'sendVerificationCode']);
+Route::post('/verify/code', [EmailVerificationController::class, 'verifyCode']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {

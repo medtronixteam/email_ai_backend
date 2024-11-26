@@ -18,7 +18,7 @@ use App\Http\Controllers\GoogleController;
 Route::get('/', [MainController::class, 'index'])->name('home');
 
 
-Route::get('signup', [LoginController::class, 'signup'])->name('signup');
+// Route::get('signup', [LoginController::class, 'signup'])->name('signup');
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::post('login', [LoginController::class, 'authenticate'])->name('loginPost');
