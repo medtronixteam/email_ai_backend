@@ -70,12 +70,10 @@ function register(Request $request) {
                 'password' => Hash::make($request->password),
                 'name' => $request->name,
             ]);
-            $token = $user->createToken('my-users-token')->plainTextToken;
-            unset($user->id);
+        
 
             $response = [
-                'user' => $user,
-                'token' => $token,
+              
                 'message'=>"Register  Successfully.",
                 'status'=>'success',
                 'code'=>200,
@@ -83,5 +81,17 @@ function register(Request $request) {
             ];
         }
         return response($response, $response['code']);
+    }
+    public function sendVerificationEmail(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+            return response()->json(['message' => 'Email already verified.'], 400);
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        return response()->json(['message' => 'Verification link sent!']);
     }
 }

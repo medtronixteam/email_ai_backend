@@ -60,14 +60,9 @@ class LoginController extends Controller
     public function registerUser(Request $request) {
 
         $validatedData = $request->validate([
-            "username" => ['string:255', 'required', 'unique:users,username'],
+      
             "password" => ['required'],
-            "nama_orangtua" => ['required', 'string:255'],
-            "nohp_orangtua" => ['required'],
-            "name" => ['required'],
-            "alamat" => ['required'],
-            "tkt_pendidikan" => ['required'],
-            "branchName" => ['required'],
+            "name" => ['required', 'string:25'],
             "email" => ['required', 'email:rfc,dns', 'unique:users,email']
         ]);
 
@@ -75,15 +70,11 @@ class LoginController extends Controller
             $validatedData["password"] = Hash::make($validatedData["password"]);
 
             User::create([
-                "username" =>  $validatedData["username"],
                 "password" =>  $validatedData["password"],
-                "nama_orangtua" =>  $validatedData["nama_orangtua"],
-                "nohp_orangtua" =>  $validatedData["nohp_orangtua"],
                 "name" =>  $validatedData["name"],
-                "alamat" =>  $validatedData["alamat"],
-                "tkt_pendidikan" =>  $validatedData["tkt_pendidikan"],
                 "email" =>  $validatedData["email"],
                 "status" =>  1,
+                "role" =>  'user',
 
             ]);
             flashy()->success('Account has been Created Login Here', '#');

@@ -16,6 +16,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\EmailVerificationController;
 /*
 
 |--------------------------------------------------------------------------
@@ -34,6 +35,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // authentication
 Route::post('auth/login', [LoginController::class, 'login']);
 Route::post('auth/register', [LoginController::class, 'register']);
+
+
+Route::post('/send-verification-code', [EmailVerificationController::class, 'sendVerificationCode']);
+Route::post('/verify-code', [EmailVerificationController::class, 'verifyCode']);
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
