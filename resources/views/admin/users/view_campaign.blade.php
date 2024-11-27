@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    
+
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -46,6 +46,7 @@
                                     <th>Group Name</th>
                                     <th>User Name</th>
                                     <th>Status</th>
+                                    <th>Email host</th>
                                     <th>Campaign Time</th>
                                     <th>Campaign Date</th>
                                 </tr>
@@ -55,6 +56,7 @@
                                     <td>{{ $Campaign->group->name }}</td>
                                     <td>{{ $Campaign->user->name }}</td>
                                     <td>{{ $Campaign->status }}</td>
+                                    <td>{{ $Campaign->email_host }}</td>
                                     <td>{{ $Campaign->campaign_time }}</td>
                                     <td>{{ $Campaign->campaign_date }}</td>
                                 </tr>
