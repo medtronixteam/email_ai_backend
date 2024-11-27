@@ -44,7 +44,7 @@
                             <div id="page-views-graph"></div>
                         </div>
                         <div class="col-5">
-                            <h3 class="mb-1"></h3>
+                            <h3 class="mb-1">{{ $activeUsers }}</h3>
                             <p class="text-primary mb-0"><i class="ti ti-arrow-up-right"></i> 30.6%</p>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                             <div id="total-task-graph"></div>
                         </div>
                         <div class="col-5">
-                            <h3 class="mb-1"></h3>
+                            <h3 class="mb-1">{{ $freeUsers }}</h3>
                             <p class="text-primary mb-0"><i class="ti ti-arrow-up-right"></i> 30.6%</p>
                         </div>
                     </div>
