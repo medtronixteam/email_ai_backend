@@ -88,7 +88,7 @@
                             <tbody>
                                 @foreach ($userEmail as $email)
                                 <tr>
-                                    <td>{{ $email->type }}</td>
+                                    <td>{{ $email->mail_type }}</td>
                                     <td>{{ $email->main_mailer }}</td>
                                     <td>{{ $email->main_host }}</td>
                                     <td>{{ $email->main_port }}</td>
