@@ -101,7 +101,7 @@ public function campaignList()
 public function show($id)
 {
     $Campaign = Campaign::with(['group', 'user'])->findOrFail($id);
-    $userEmail= UserEmail::where('user_id', $Campaign->user_id)->get();
+    $userEmail= UserEmail::where('user_id', $Campaign->user_id)->latest()->get();
  
     return view('admin.users.view_campaign', compact('Campaign','userEmail'));
 }
