@@ -94,7 +94,7 @@ class MainController extends Controller
 }
 public function campaignList()
 {
-    $Campaign= Campaign::get();
+    $Campaign= Campaign::latest()->get();
     return view('admin.users.campaigns_list',compact('Campaign'));
 }
 public function show($id)
