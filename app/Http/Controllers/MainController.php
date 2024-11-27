@@ -34,9 +34,10 @@ class MainController extends Controller
 
     public function view($id)
     {
-        $sellers = User::with('campaign')->findOrFail($id);
+        $sellers = User::with('campaign','useremail')->findOrFail($id);
         $campaign = $sellers->campaign->first();
-        return view('admin.users.view', compact('sellers', 'campaign'));
+        $mail = $sellers->useremail->first();
+        return view('admin.users.view', compact('sellers', 'campaign','mail'));
     }
     
     public function disable($userId)

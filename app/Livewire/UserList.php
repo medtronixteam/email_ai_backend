@@ -41,7 +41,7 @@ public $addUserPortionText='Add User';
     public function render()
     {
 
-        $this->users=User::latest()->get();
+        $this->users=User::latest()->paginate(10);
         return view('livewire.user-list');
     }
 }
