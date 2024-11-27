@@ -67,18 +67,18 @@
                         </li>
                            </ul> --}}
                 </li>
-                <li class="pc-item pc-hasmenu"><a href="{{ route('admin.users.reply') }}" class="pc-link"><span class="pc-micon"><svg
+                {{-- <li class="pc-item pc-hasmenu"><a href="{{ route('admin.users.reply') }}" class="pc-link"><span class="pc-micon"><svg
                                 class="pc-icon">
                                 <use xlink:href="#custom-status-up"></use>
                             </svg> </span><span class="pc-mtext">Support</span> <span class="pc-arrow"><i
                                 data-feather="chevron-right"></i></span>
 
                     </a>
-                    {{-- <ul class="pc-submenu">
+                    <ul class="pc-submenu">
                         <li class="pc-item"><a class="pc-link" href="">List</a>
                         </li>
-                           </ul> --}}
-                </li>
+                           </ul>
+                </li> --}}
                 {{-- <li class="pc-item pc-hasmenu"><a href="javascript:void(0)" class="pc-link"><span class="pc-micon"><svg
                                 class="pc-icon">
                                 <use xlink:href="#custom-status-up"></use>

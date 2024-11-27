@@ -60,7 +60,16 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td>{{ $user->name }}</td>
+                                    <td>
+                                        <h6 style="height:35px;" class="mb-0">
+                                            {{ $user->name }}
+                                            @if (auth()->user()->id == $user->id && $user->email_verified_at)
+                                                <span style="color: green; font-size: 18px;">✔️</span>
+                                            @else
+                                                <span style="color: red; font-size: 18px;">❌</span>
+                                            @endif
+                                        </h6>
+                                    </td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->number }}</td>
                                     <td>{{ $user->created_at }}</td>

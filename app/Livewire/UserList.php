@@ -5,10 +5,13 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use Livewire\WithPagination;
 
 class UserList extends Component
 {
+
+    use WithPagination;
+
 public $users=[];
 public $name;
 public $email;
@@ -37,6 +40,7 @@ public $addUserPortionText='Add User';
 
     public function render()
     {
+
         $this->users=User::latest()->get();
         return view('livewire.user-list');
     }

@@ -9,22 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('plans', function (Blueprint $table) {
-            $table->id();
-            $table->string('plan_name');
-            $table->enum('plan_duration', ['month', 'year']);
-            $table->decimal('plan_price', 8, 2);
-            $table->timestamps();
-        });
-    }
+    // public function up(): void
+    // {
+    //     Schema::create('plans', function (Blueprint $table) {
+    //         $table->id();
+    //         $table->string('plan_name');
+    //         $table->enum('plan_duration', ['month', 'year']);
+    //         $table->decimal('plan_price', 8, 2);
+    //         $table->timestamps();
+    //     });
+    // }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
-        Schema::dropIfExists('plans');
-    }
+    // public function down(): void
+    // {
+    //     Schema::dropIfExists('plans');
+    // }
 };

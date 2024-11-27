@@ -64,7 +64,66 @@
         </div>
     </div>
 </div>
-
+<div class="col-md-12">
+    <div class="page-header-title">
+        <h2 class="mb-0">Plan Details</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card animated-card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Plan</th>
+                            <th>Expiry date</th>
+                            <th>Recent Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ $sellers->user_plan }}</td>
+                            <td>{{ $sellers->expiry_date }}</td>
+                            <td>{{ $sellers->recent_plan }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="page-header-title">
+        <h2 class="mb-0">Campaign Details</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card animated-card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Message</th>
+                            <th>Campaign Time</th>
+                            <th>Campaign Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ $sellers->campaign->name }}</td>
+                            <td>{{ $sellers->campaign->message }}</td>
+                            <td>{{ $sellers->campaign->campaign_time }}</td>
+                            <td>{{ $sellers->campaign->campaign_date }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('js')
 

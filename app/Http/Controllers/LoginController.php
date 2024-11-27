@@ -68,7 +68,8 @@ class LoginController extends Controller
             "alamat" => ['required'],
             "tkt_pendidikan" => ['required'],
             "branchName" => ['required'],
-            "email" => ['required', 'email:rfc,dns', 'unique:users,email']
+            "email" => ['required', 'email:rfc,dns', 'unique:users,email'],
+            "user_plan" => ['required'],
         ]);
 
         if($validatedData){
@@ -84,6 +85,7 @@ class LoginController extends Controller
                 "tkt_pendidikan" =>  $validatedData["tkt_pendidikan"],
                 "email" =>  $validatedData["email"],
                 "status" =>  1,
+                "user_plan" =>  'free',
 
             ]);
             flashy()->success('Account has been Created Login Here', '#');

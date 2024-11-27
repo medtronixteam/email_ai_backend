@@ -41,54 +41,64 @@
                             </div>
                         </div>
                        @if(!$addUserPortion)
-                        <table class="dataTable table table-striped table-bordered nowrap">
-                            <thead>
+                       <table class="dataTable table table-striped table-bordered nowrap">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Joining</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Joining</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <td>
+                                        {{ $user->name }}
+                                        @if ($user->email_verified_at)
+                                            <span style="color: green; font-size: 15px;">✔️</span>
+                                        @else
+                                            <span style="color: red; font-size: 15px;">❌</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->number }}</td>
+                                    <td>{{ $user->created_at }}</td>
+                                    <td>{{ $user->status == 1 ? 'Enable' : 'Disable' }}</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button class="btn p-0 border-0 bg-transparent" type="button"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fa-solid fa-ellipsis text-white" style="font-size: 1.5rem;"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                @if ($user->status == 1)
+                                                    <li><a class="dropdown-item"
+                                                            href="{{ route('admin.users.view', $user->id) }}">View</a></li>
+                                                    <li>
+                                                        <a href="javascript:void(0)" class="dropdown-item"
+                                                            onclick="confirmDisable({{ $user->id }})">Disable</a>
+                                                    </li>
+                                                @else
+                                                    <li>
+                                                        <a href="javascript:void(0)" class="dropdown-item"
+                                                            onclick="confirmEnable({{ $user->id }})">Enable</a>
+                                                    </li>
+                                                @endif
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->number }}</td>
-                                        <td>{{ $user->created_at }}</td>
-                                        <td>{{ $user->status == 1 ? 'Enable' : 'Disable' }}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button class="btn p-0 border-0 bg-transparent" type="button"
-                                                    id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="fa-solid fa-ellipsis text-white" style="font-size: 1.5rem;"></i>
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    @if ($user->status == 1)
-                                                        <li><a class="dropdown-item"
-                                                                href="{{ route('admin.users.view', $user->id) }}">View</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="dropdown-item"
-                                                                onclick="confirmDisable({{ $user->id }})">Disable</a>
-                                                        </li>
-                                                    @else
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="dropdown-item"
-                                                                onclick="confirmEnable({{ $user->id }})">Enable</a>
-                                                        </li>
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    
+                    {{-- <div class="d-flex justify-content-end mt-3">
+                       {{ $users->links() }}
+                    </div>
+                     --}}
 
                         @else
 
@@ -133,17 +143,7 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
         <!-- Add User Modal -->
-
        </div>
-
 </div>
 

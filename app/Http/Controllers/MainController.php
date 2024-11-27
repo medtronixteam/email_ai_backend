@@ -17,7 +17,7 @@ class MainController extends Controller
     {
         return view('home');
     }
-
+  
 
     public function adminDashboard()
     {
@@ -34,7 +34,7 @@ class MainController extends Controller
 
         public function view($id)
     {
-        $sellers = User::findOrFail($id);
+        $sellers = User::with('campaign')->findOrFail($id);
         return view('admin.users.view', compact('sellers'));
     }
     public function disable($userId)

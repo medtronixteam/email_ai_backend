@@ -10,6 +10,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+
+    public function campaign()
+    {
+        return $this->hasMany(Campaign::class);
+    }
+    
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -30,6 +36,7 @@ class User extends Authenticatable
         'profile_photo',
         'number',
         'timezone',
+        'user_plan',
     ];
 
     /**
