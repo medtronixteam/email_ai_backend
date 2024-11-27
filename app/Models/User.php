@@ -15,6 +15,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Campaign::class);
     }
+    public function useremail()
+    {
+        return $this->hasMany(UserEmail::class);
+    }
     
     use HasApiTokens, HasFactory, Notifiable;
 
