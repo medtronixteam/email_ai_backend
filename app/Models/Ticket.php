@@ -13,4 +13,9 @@ class Ticket extends Model
         return $this->hasMany(TicketMessage::class);
     }
 
+
+public function latestMessage()
+{
+    return $this->hasOne(TicketMessage::class)->latestOfMany(); 
+}
 }

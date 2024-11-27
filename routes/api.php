@@ -78,6 +78,7 @@ Route::get('/auth/google', [GoogleController::class, 'generateUrl']);
 Route::get('dashboard', [UserDataController::class, 'getUserSummary']);
 Route::post('change-password', [UserDataController::class, 'changePassword']);
 Route::post('timezone', [UserDataController::class, 'changeTimezone']);
+Route::get('timezone', [UserDataController::class, 'getTimezone']);
 
 
 Route::get('/tickets', [TicketController::class, 'list']);
