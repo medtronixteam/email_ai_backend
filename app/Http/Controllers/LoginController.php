@@ -52,38 +52,6 @@ class LoginController extends Controller
         return redirect('login')->with('success', 'You have been log out!');
     }
 
-    public function register(){
-
-
-    }
-
-    public function registerUser(Request $request) {
-
-        $validatedData = $request->validate([
-            
-            "password" => ['required'],
-            "name" => ['required', 'string:25'],
-            "email" => ['required', 'email:rfc,dns', 'unique:users,email']
-]);
-
-        if($validatedData){
-            $validatedData["password"] = Hash::make($validatedData["password"]);
-
-            User::create([
-                "password" =>  $validatedData["password"],
-                "name" =>  $validatedData["name"],
-                "email" =>  $validatedData["email"],
-                "status" =>  1,  "user_plan" =>  'free',  "role" =>  'user',
-
-            ]);
-            flashy()->success('Account has been Created Login Here', '#');
-            return redirect('/')->with('success', 'Registered Successful!');
-
-        }
-
-        return back()->with('error', 'Registration failed!');
-
-    }
      public function resetPassword($key){
         return view('admin.users.resetPassword',['key'=>$key]);
     }

@@ -68,7 +68,7 @@ function register(Request $request) {
            $user= User::create([
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'name' => $request->name,
+                'name' => $request->name,  "status" =>  1,  "user_plan" =>  'free',  "role" =>  'user',
             ]);
         
 
