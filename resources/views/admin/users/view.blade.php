@@ -112,18 +112,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{{ $sellers->campaign->name }}</td>
-                            <td>{{ $sellers->campaign->message }}</td>
-                            <td>{{ $sellers->campaign->campaign_time }}</td>
-                            <td>{{ $sellers->campaign->campaign_date }}</td>
-                        </tr>
+                        @if($campaign)
+                            <tr>
+                                <td>{{ $campaign->name }}</td>
+                                <td>{{ $campaign->message }}</td>
+                                <td>{{ $campaign->campaign_time }}</td>
+                                <td>{{ $campaign->campaign_date }}</td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td colspan="4">No campaign found.</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
 @endsection
 @push('js')
 
