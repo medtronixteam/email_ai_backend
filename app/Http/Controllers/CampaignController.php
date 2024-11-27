@@ -49,7 +49,7 @@ class CampaignController extends Controller
             'name' => 'required',
             'group_id' => 'required',
             'message' => 'required',
-            'subject' => 'required|max:50',
+            'subject' => 'required|max:100',
             'email_host' => 'required|in:gmail_password,email,gmail_auth',
             'campaign_time' => 'required|date_format:H:i',
             'campaign_date' => 'required|date_format:Y-m-d',

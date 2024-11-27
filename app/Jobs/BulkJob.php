@@ -68,6 +68,7 @@ class BulkJob implements ShouldQueue
                 'mail.mailers.smtp.username' => $config->main_username,
                 'mail.mailers.smtp.password' => $config->main_password,
                 'mail.mailers.smtp.encryption' => $config->main_encryption,
+                'mail.mailers.smtp.from_name' => $config->main_from_name,
             ]);
 
               // Send the email

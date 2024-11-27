@@ -42,7 +42,7 @@ class TicketController extends Controller
     public function list(Request $request)
     {
 
-        $tickets = Ticket::where('user_id', auth('sanctum')->id())->latest()->get();
+        $tickets = Ticket::with('latestMessage')->where('user_id', auth('sanctum')->id())->latest()->get();
         $response = [
             'data' => $tickets,
             'message' => "",

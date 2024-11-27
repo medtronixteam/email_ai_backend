@@ -60,6 +60,17 @@ public function changeTimezone(Request $request)
     }
     return response($response, $response['code']);
 }
+public function getTimezone()
+{
+  
+    $response = [
+        'message' =>"User Timezone",
+        'status' => 'success',
+        'timezone'=>User::find(auth('sanctum')->id())->timezone,
+        'code' => 200,
+    ];
+    return response($response, $response['code']);
+}
 public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
