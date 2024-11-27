@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Campaign;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
+use App\Models\UserEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -101,7 +102,9 @@ public function campaignList()
 public function show($id)
 {
     $Campaign = Campaign::with(['group', 'user'])->findOrFail($id);
-    return view('admin.users.view_campaign', compact('Campaign'));
+    $userEmail= UserEmail::where('user_id', $Campaign->user_id)->latest()->get();
+ 
+    return view('admin.users.view_campaign', compact('Campaign','userEmail'));
 }
 // user create
 public function store(Request $request)
