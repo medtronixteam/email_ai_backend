@@ -143,7 +143,9 @@
                     <thead class="table-light">
                         <tr>
                             <th>Mail Type</th>
-                            <th>{{ $mail->mail_type }}</th>
+                           @if ($mail)
+                           <th>{{ $mail->mail_type }}</th>
+                           @endif
                         </tr>
                     </thead>
                     <tbody>
