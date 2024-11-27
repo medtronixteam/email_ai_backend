@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Config;
 use App\Mail\AttachmentMail;
 use App\Models\Attachment;
 
@@ -63,14 +64,27 @@ class BulkJob implements ShouldQueue
             }
 
              config([
+                 'mail.mailers.smtp.transport' => $config->main_mailer,
                 'mail.mailers.smtp.host' => $config->main_host,
                 'mail.mailers.smtp.port' => $config->main_port,
                 'mail.mailers.smtp.username' => $config->main_username,
                 'mail.mailers.smtp.password' => $config->main_password,
                 'mail.mailers.smtp.encryption' => $config->main_encryption,
-                'mail.mailers.smtp.from_name' => $config->main_from_name,
             ]);
-
+ 
+            $config = [
+                'driver' => 'smtp',
+                'host' => $config->main_host,
+                'port' => $config->main_port,
+                'username' => $config->main_username,
+                'password' => $config->main_password,
+                'encryption' => $config->main_password,
+                'from' => [
+                    'address' => $config->main_from_address,
+                    'name' => $config->main_from_name,
+                ],
+            ];
+            Config::set('mail', $config);
               // Send the email
             // Mail::raw($this->emailBody, function ($message) {
             //     $message->to($this->emailAddress)
@@ -79,7 +93,7 @@ class BulkJob implements ShouldQueue
 
         
             // Send the HTML email
-            Log::info('Attachment________________ '.$this->attachments);
+            Log::info('Attachment_________a_______ '.$this->attachments);
                 if($this->attachments=="[]" || $this->attachments==null){
                     Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody], function ($message) {
                         $message->to($this->emailAddress)
