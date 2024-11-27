@@ -32,11 +32,13 @@ class MainController extends Controller
         return view('admin.users.user_list');
     }
 
-        public function view($id)
+    public function view($id)
     {
         $sellers = User::with('campaign')->findOrFail($id);
-        return view('admin.users.view', compact('sellers'));
+        $campaign = $sellers->campaign->first();
+        return view('admin.users.view', compact('sellers', 'campaign'));
     }
+    
     public function disable($userId)
     {
     $user = User::findOrFail($userId);
