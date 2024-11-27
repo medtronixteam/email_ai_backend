@@ -66,7 +66,7 @@
 </div>
 <div class="col-md-12">
     <div class="page-header-title">
-        <h2 class="mb-0">Plan Details</h2>
+        <h2 class="mb-0">Recent Plans</h2>
     </div>
 </div>
 <div class="row">
