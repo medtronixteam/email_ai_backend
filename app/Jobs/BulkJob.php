@@ -81,7 +81,7 @@ class BulkJob implements ShouldQueue
 
         
             // Send the HTML email
-            Log::info('Attachment________________ '.$this->attachments);
+            Log::info('Attachment_________a_______ '.$this->attachments);
                 if($this->attachments=="[]" || $this->attachments==null){
                     Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody], function ($message) {
                         $message->to($this->emailAddress)
