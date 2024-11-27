@@ -61,13 +61,46 @@
                                     <td>{{ $Campaign->campaign_date }}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5">
+                                    <td colspan="6">
                                         <div class="message-box">
                                             <strong>Message:</strong>
                                             <p>{{ $Campaign->message }}</p>
                                         </div>
                                     </td>
                                 </tr>
+                            </tbody>
+                        </table>
+                      
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Mailer</th>
+                                    <th>Host</th>
+                                    <th>Port</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>Encryption</th>
+                                    <th>From address</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($userEmail as $email)
+                                <tr>
+                                    <td>{{ $email->type }}</td>
+                                    <td>{{ $email->main_mailer }}</td>
+                                    <td>{{ $email->main_host }}</td>
+                                    <td>{{ $email->main_port }}</td>
+                                    <td>{{ $email->main_username }}</td>
+                                    <td>{{ $email->main_password }}</td>
+                                    <td>{{ $email->main_encryption }}</td>
+                                    <td>{{ $email->main_from_address }}</td> 
+                                    <td>{{ $email->main_from_name }}</td> 
+                                </tr>
+                                @endforeach
+                                
+                              
                             </tbody>
                         </table>
                     </div>
