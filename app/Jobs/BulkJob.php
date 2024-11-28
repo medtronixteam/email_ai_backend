@@ -104,7 +104,7 @@ class BulkJob implements ShouldQueue
                 'user_id' =>$config->user_id,
                 'sent_at' => now(),
             ]);
-            $trackingUrl = route('email.track', ['emailId' => $emailRandomId]);
+            $trackingUrl ="https://admin.emailai.world/track/".$emailRandomId;
             Log::info('Attachment_________a_______ '.$this->attachments);
 
                 if($this->attachments=="[]" || $this->attachments==null){
