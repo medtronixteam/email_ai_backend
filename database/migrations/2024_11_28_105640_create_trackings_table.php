@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('trackings', function (Blueprint $table) {
             $table->id();
             $table->text('email_id')->nullable(); 
+          $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('email')->nullable(); 
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('open_at')->nullable();

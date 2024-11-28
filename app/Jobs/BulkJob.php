@@ -76,7 +76,7 @@ class BulkJob implements ShouldQueue
                 'mail.mailers.smtp.encryption' => $config->main_encryption,
             ]);
  
-            $config = [
+            $configs = [
                 'driver' => 'smtp',
                 'host' => $config->main_host,
                 'port' => $config->main_port,
@@ -88,7 +88,7 @@ class BulkJob implements ShouldQueue
                     'name' => $config->main_from_name,
                 ],
             ];
-            Config::set('mail', $config);
+            Config::set('mail', $configs);
               // Send the email
             // Mail::raw($this->emailBody, function ($message) {
             //     $message->to($this->emailAddress)
@@ -101,6 +101,7 @@ class BulkJob implements ShouldQueue
             Tracking::create([
                 'email_id' => $emailRandomId,
                 'email' =>$this->emailAddress,
+                'user_id' =>$config->user_id,
                 'sent_at' => now(),
             ]);
             $trackingUrl = route('email.track', ['emailId' => $emailRandomId]);
