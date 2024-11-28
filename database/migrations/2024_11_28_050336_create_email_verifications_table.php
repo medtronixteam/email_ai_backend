@@ -8,22 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('email_verifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->unique();
-            $table->string('verification_code');
-            $table->timestamp('expires_at');
+            $table->bigIncrements('id');
+            $table->string('email', 191)->unique();
+            $table->string('verification_code', 191);
+            $table->timestamp('expires_at')->useCurrentOnUpdate()->useCurrent();
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('email_verifications');
     }

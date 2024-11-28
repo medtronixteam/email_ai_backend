@@ -8,21 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->unsignedInteger('campaign_id')->nullable();
+            $table->foreign(['group_id'])->references(['id'])->on('groups')->onDelete('CASCADE');
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->dropIfExists('campaign_id');
+            $table->dropForeign('contacts_group_id_foreign');
         });
     }
 };

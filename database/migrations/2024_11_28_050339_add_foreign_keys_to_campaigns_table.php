@@ -8,21 +8,27 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::table('campaigns', function (Blueprint $table) {
-            $table->string('attachments')->nullable();
+            $table->foreign(['user_id'])->references(['id'])->on('users')->onDelete('CASCADE');
+            $table->foreign(['group_id'])->references(['id'])->on('groups')->onDelete('CASCADE');
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::table('campaigns', function (Blueprint $table) {
-            $table->dropIfExists('attachments');
+            $table->dropForeign('campaigns_user_id_foreign');
+            $table->dropForeign('campaigns_group_id_foreign');
         });
     }
 };

@@ -8,25 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('subscriptions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('plan_id');
-            $table->timestamp('activation_date')->default(now());
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->index('subscriptions_user_id_foreign');
+            $table->unsignedBigInteger('plan_id')->index('subscriptions_plan_id_foreign');
+            $table->timestamp('activation_date')->default('2024-11-19 07:01:31');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('subscriptions');
     }
