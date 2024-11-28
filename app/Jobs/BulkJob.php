@@ -11,9 +11,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use App\Mail\AttachmentMail;
 use App\Models\Attachment;
+use App\Models\Tracking;
 
 class BulkJob implements ShouldQueue
 {
@@ -47,8 +49,10 @@ class BulkJob implements ShouldQueue
         }
         Log::info('BulkJob started. Job ID: ' . $jobId);
         Log::info('yes did'.$this->emailId);
+
         Log::info('____________Sarting________________ ');
         try {
+
             $emailData = Contact::find($this->emailId);
 
             if (!$emailData) {
@@ -93,9 +97,17 @@ class BulkJob implements ShouldQueue
 
         
             // Send the HTML email
+            $emailRandomId = Str::uuid();
+            Tracking::create([
+                'email_id' => $emailRandomId,
+                'email' =>$this->emailAddress,
+                'sent_at' => now(),
+            ]);
+            $trackingUrl = route('email.track', ['emailId' => $emailRandomId]);
             Log::info('Attachment_________a_______ '.$this->attachments);
+
                 if($this->attachments=="[]" || $this->attachments==null){
-                    Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody], function ($message) {
+                    Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody, 'trackingUrl' => $trackingUrl], function ($message) {
                         $message->to($this->emailAddress)
                                 ->subject($this->subject);
                     });
@@ -103,6 +115,7 @@ class BulkJob implements ShouldQueue
                     $details = [
                         'subject' => $this->subject,
                         'body' => $this->emailBody,
+                        'trackingUrl' => $trackingUrl,
                     ];
                     $filePaths = [];
                     $allAttachments = json_decode($this->attachments, true);
