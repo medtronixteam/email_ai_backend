@@ -39,6 +39,7 @@ Route::post('auth/register', [LoginController::class, 'register']);
 
 Route::post('/verification/code', [EmailVerificationController::class, 'sendVerificationCode']);
 Route::post('/verify/code', [EmailVerificationController::class, 'verifyCode']);
+Route::get('/show/table', [EmailVerificationController::class, 'getTables']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
