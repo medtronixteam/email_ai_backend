@@ -146,8 +146,8 @@
                                 @foreach ($Campaign->group->contacts as $contact)
                                 @php
                                     
-                                 $trackings=   DB::table('trackings')->where('email', $contact->email)->latest()->get();
-                                 dd($trackings);
+                                 $trackings=   DB::table('trackings')->where('email', $contact->email)->where('user_id', $Campaign->user_id)->latest()->first();
+                               
                                 @endphp
                                 <tr>
                                     <td>{{ $contact->name }}</td>
