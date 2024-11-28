@@ -59,9 +59,11 @@ class MainController extends Controller
 
     return redirect()->back()->with('success', 'User disabled successfully.');
     }
-    public function reset($resetId) {
-        return view('admin.users.resetPassword', ['resetId' => $resetId]);
+    public function reset($id)
+    {
+        return view('admin.users.resetPassword', compact('id'));
     }
+    
     public function resetPass(Request $request) {
         $validatedData = $request->validate([
             "new_password" => ['required', 'min:3'],
