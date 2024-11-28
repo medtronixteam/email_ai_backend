@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Models\EmailVerification;
+use App\Models\User;
 
 class EmailVerificationController extends Controller
 {
@@ -57,6 +58,7 @@ class EmailVerificationController extends Controller
             return response()->json(['message' => 'Code has expired','status'=>'error','code'=>500], 500);
         }
 
+        User::where('email', $request->email)->update(['email_verified_at' => now()]);
         $emailVerification->delete();
 
         return response()->json(['message' => 'Email verified successfully','status'=>'success','code'=>200],200);
