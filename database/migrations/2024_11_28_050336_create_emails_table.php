@@ -8,18 +8,20 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('emails', function (Blueprint $table) {
-            $table->id();
-            $table->string('email')->nullable();
-            $table->string('name')->nullable();
-            $table->string('bio')->nullable();
-            $table->string('profileUrl')->nullable();
-            $table->string('profile')->nullable();
-            $table->string('birthday')->nullable();
-            $table->string('contactNumber')->nullable();
+            $table->bigIncrements('id');
+            $table->string('email', 191)->nullable();
+            $table->string('name', 191)->nullable();
+            $table->text('bio')->nullable();
+            $table->text('profile')->nullable();
+            $table->text('profileUrl')->nullable();
+            $table->string('birthday', 191)->nullable();
+            $table->string('contactNumber', 191)->nullable();
             $table->boolean('scraped')->default(true);
             $table->text('metaData')->nullable();
             $table->timestamps();
@@ -28,8 +30,10 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('emails');
     }

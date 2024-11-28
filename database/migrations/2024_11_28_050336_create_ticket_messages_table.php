@@ -8,23 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('ticket_messages', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->text('description');
-            $table->unsignedBigInteger('ticket_id');
-            $table->boolean('is_admin')->default(0);
+            $table->unsignedBigInteger('ticket_id')->index('ticket_messages_ticket_id_foreign');
+            $table->boolean('is_admin')->default(false);
             $table->timestamps();
-            $table->foreign('ticket_id')->references('id')->on('tickets')->onDelete('cascade');
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('ticket_messages');
     }

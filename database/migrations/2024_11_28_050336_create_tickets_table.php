@@ -8,25 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('status')->default('open'); // 'open', 'closed', etc.
-            $table->unsignedBigInteger('user_id');
+            $table->bigIncrements('id');
+            $table->string('title', 191);
+            $table->string('status', 191)->default('open');
+            $table->unsignedBigInteger('user_id')->index('tickets_user_id_foreign');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('tickets');
     }
