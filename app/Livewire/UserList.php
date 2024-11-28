@@ -10,9 +10,9 @@ use Livewire\WithPagination;
 class UserList extends Component
 {
 
-    use WithPagination;
+use WithPagination;
 
-public $users=[];
+// public $users=[];
 public $name;
 public $email;
 public $password;
@@ -41,7 +41,7 @@ public $addUserPortionText='Add User';
     public function render()
     {
 
-        $this->users=User::latest()->get();
-        return view('livewire.user-list');
+        $users=User::latest()->paginate(10);
+        return view('livewire.user-list', compact('users'));
     }
 }

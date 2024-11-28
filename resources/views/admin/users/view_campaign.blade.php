@@ -99,8 +99,6 @@
                                     <td>{{ $email->main_from_name }}</td> 
                                 </tr>
                                 @endforeach
-                                
-                              
                             </tbody>
                         </table>
                     </div>

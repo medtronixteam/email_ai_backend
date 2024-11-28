@@ -10,12 +10,12 @@
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
                     <li class="breadcrumb-item"><a href="javascript: void(0)">Users</a></li>
-                    <li class="breadcrumb-item" aria-current="page">View Seller</li>
+                    <li class="breadcrumb-item" aria-current="page">Reset Password</li>
                 </ul>
             </div>
             <div class="col-md-12">
                 <div class="page-header-title">
-                    <h2 class="mb-0">Seller Details</h2>
+                    <h2 class="mb-0">Reset Password</h2>
                 </div>
             </div>
         </div>
@@ -28,9 +28,9 @@
                 Reset Password
             </div>
             <div class="card-body">
-                <form action="{{ route('reset.password') }}"  id="resetForm" method="POST">
+                <form action="{{ route('reset.password') }}" id="resetForm" method="POST">
                     @csrf
-                    <input type="hidden" name="resetId" value="{{ $resetId }}">
+                    <input type="hidden" name="resetId" value="{{ $id }}">
                     <div class="row form-group">
                         <div class="col-6">
                             <label for="new_password" class="form-label">New Password</label>
@@ -38,12 +38,11 @@
                         </div>
                         <div class="col-6">
                             <label for="confirm_password" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                                required>
+                            <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" required>
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-12">
-                                <button class="btn btn-dark float-right" type="submit">Reset</button>
+                                <button class="btn btn-primary float-right" type="submit">Reset</button>
                             </div>
                         </div>
                     </div>

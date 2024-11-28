@@ -187,14 +187,14 @@
                                         </svg> <span>Settings</span> </span>
 
                                     </a>
-                                        <a href="/resetPassword" class="dropdown-item">
+                                        {{-- <a href="{{route('user.reset')}}" class="dropdown-item">
                                             <span>
                                                 <svg class="pc-icon text-muted me-2">
                                                     <use xlink:href="#custom-lock-outline"></use>
                                                 </svg>
                                                 <span>Change Password</span>
                                             </span>
-                                        </a>
+                                        </a> --}}
                                 <hr class="border-secondary border-opacity-50">
                             </div>
                         </div>

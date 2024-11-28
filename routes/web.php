@@ -34,7 +34,7 @@ Route::get('users/list', [MainController::class, 'users'])->name('admin.users.li
 Route::get('/users/view/{id}', [MainController::class, 'view'])->name('admin.users.view');
 Route::post('users/disable/{userId}', [MainController::class, 'disable'])->name('admin.users.disable');
 Route::post('users/enable/{userId}', [MainController::class, 'enable'])->name('admin.users.enable');
-Route::get('user/reset-password/{resetId}', [MainController::class, 'reset'])->name('user.reset');
+Route::get('user/reset-password/{id}', [MainController::class, 'reset'])->name('user.reset');
 Route::post('user/reset-pass', [MainController::class, 'resetPass'])->name('reset.password');
 Route::get('/profile', [MainController::class, 'showProfile'])->name('profile');
 Route::post('profile/reset-name', [MainController::class, 'resetName'])->name('profile.reset.name');
