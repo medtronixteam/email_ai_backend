@@ -117,7 +117,7 @@ class UserEmailController extends Controller
 
                         Log::info("Sending Job for email" .$email->email);
                         //SendEmailJob::dispatch($email->id, $configData->id,$compains->message);
-                       $jobBulk=BulkJob::dispatch($email->id,$configData->id,$compains->message,$compains->subject,$compains->attachments);
+                       $jobBulk=BulkJob::dispatch($email->id,$configData->id,$compains->message,$compains->subject,$compains->attachments,$compains->id);
 
                     }
 

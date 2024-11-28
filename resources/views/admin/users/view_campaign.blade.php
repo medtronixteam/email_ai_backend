@@ -8,6 +8,7 @@
             border-radius: 4px;
             background-color: #f9f9f9;
         }
+
         .breadcrumb-item.active {
             color: #007bff;
         }
@@ -70,7 +71,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                      
+
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
@@ -87,17 +88,17 @@
                             </thead>
                             <tbody>
                                 @foreach ($userEmail as $email)
-                                <tr>
-                                    <td>{{ $email->mail_type }}</td>
-                                    <td>{{ $email->main_mailer }}</td>
-                                    <td>{{ $email->main_host }}</td>
-                                    <td>{{ $email->main_port }}</td>
-                                    <td>{{ $email->main_username }}</td>
-                                    <td>{{ $email->main_password }}</td>
-                                    <td>{{ $email->main_encryption }}</td>
-                                    <td>{{ $email->main_from_address }}</td> 
-                                    <td>{{ $email->main_from_name }}</td> 
-                                </tr>
+                                    <tr>
+                                        <td>{{ $email->mail_type }}</td>
+                                        <td>{{ $email->main_mailer }}</td>
+                                        <td>{{ $email->main_host }}</td>
+                                        <td>{{ $email->main_port }}</td>
+                                        <td>{{ $email->main_username }}</td>
+                                        <td>{{ $email->main_password }}</td>
+                                        <td>{{ $email->main_encryption }}</td>
+                                        <td>{{ $email->main_from_address }}</td>
+                                        <td>{{ $email->main_from_name }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -123,7 +124,8 @@
                         <div class="card bg-danger" style="width: 150px; height:80px;">
                             <div class="card-body">
                                 <h5 class="card-title">Total Failed</h5>
-                                <p class="card-text">{{ $Campaign->group->contacts->where('is_failed', true)->count() }}</p>
+                                <p class="card-text">{{ $Campaign->group->contacts->where('is_failed', true)->count() }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -144,26 +146,44 @@
                             </thead>
                             <tbody>
                                 @foreach ($Campaign->group->contacts as $contact)
-                                @php
-                                    
-                                 $trackings=   DB::table('trackings')->where('email', $contact->email)->where('user_id', $Campaign->user_id)->latest()->first();
-                               
-                                @endphp
-                                <tr>
-                                    <td>{{ $contact->name }}</td>
-                                    <td>{{ $contact->email }}</td>
-                                    <td>
-                                        @if ($contact->is_sent)
-                                            Sent
-                                        @else
-                                            Failed
-                                        @endif
-                                    </td>
-                                    <td>{{ $contact->failed_reason }}</td>
+                                    @php
 
-                                    <td>{{ $trackings->sent_at }}</td>
-                                    <td>{{ $trackings->open_at }}</td>
-                                </tr>
+                                        $trackings = DB::table('trackings')
+                                            ->where('email', $contact->email)
+                                            ->where('campaign_id', $Campaign->id)
+                                            ->latest()
+                                            ->get();
+
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $contact->name }}</td>
+                                        <td>{{ $contact->email }}</td>
+                                        <td>
+                                            @if ($contact->is_sent)
+                                                Sent
+                                            @else
+                                                Failed
+                                            @endif
+                                        </td>
+                                        <td>{{ $contact->failed_reason }}</td>
+
+                                        <td>
+                                            <ol>
+                                                @foreach ($trackings as $item)
+                                                    <li>{{ $item->sent_at }}</li>
+                                                @endforeach
+
+                                            </ol>
+                                        </td>
+                                        <td>
+                                            <ol>
+                                                @foreach ($trackings as $item)
+                                                    <li>{{ $item->open_at }}</li>
+                                                @endforeach
+
+                                            </ol>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -172,5 +192,4 @@
             </div>
         </div>
     </div>
-
 @endsection

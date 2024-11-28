@@ -26,16 +26,18 @@ class BulkJob implements ShouldQueue
     public $emailBody;
     public $subject;
     public $attachments;
+    public $campaignId;
     /**
      * Create a new job instance.
      */
-    public function __construct($emailId,$configId,$emailBody,$subject,$attachments)
+    public function __construct($emailId,$configId,$emailBody,$subject,$attachments,$campaignId)
     {
         $this->configId=$configId;
         $this->emailId=$emailId;
         $this->emailBody=$emailBody;
         $this->subject=$subject;
         $this->attachments=$attachments;
+        $this->campaignId=$campaignId;
     }
 
     /**
@@ -101,6 +103,7 @@ class BulkJob implements ShouldQueue
             Tracking::create([
                 'email_id' => $emailRandomId,
                 'email' =>$this->emailAddress,
+                'campaign_id' =>$this->campaignId,
                 'user_id' =>$config->user_id,
                 'sent_at' => now(),
             ]);
@@ -135,7 +138,7 @@ class BulkJob implements ShouldQueue
                 }
          
 
-            $emailData->update(['is_sent' => 1, 'is_failed' => 0,'job_id'=>$jobId]);
+            $emailData->update(['is_sent' => 1, 'is_failed' => 0,'failed_reason'=>null,'job_id'=>$jobId]);
             Log::info('____________Success________________ ');
             //code...
         } catch (\Throwable $th) {
