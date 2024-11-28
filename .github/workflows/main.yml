@@ -26,7 +26,8 @@ jobs:
           cd ..
           sudo docker compose build backend
           sudo docker compose up backend -d
-          docker exec -it contact-backend-1 php artisan migrate --seed
+          docker exec -it contact-backend-1 bash
+          php artisan migrate --seed
           exit
         EOF
 
