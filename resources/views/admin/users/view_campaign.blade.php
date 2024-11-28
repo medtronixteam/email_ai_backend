@@ -138,11 +138,16 @@
                                     <th>Email</th>
                                     <th>Status</th>
                                     <th>Failed Reason</th>
-                                    <th>Created At</th>
+                                    <th>Sent At</th>
+                                    <th>Open At</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($Campaign->group->contacts as $contact)
+                                @php
+                                    
+                                 $trackings=   DB::table('trackings')->where('email', $contact->email)->where('user_id', $contact->campaign->user_id)->latest()->first();
+                                @endphp
                                 <tr>
                                     <td>{{ $contact->name }}</td>
                                     <td>{{ $contact->email }}</td>
@@ -154,7 +159,9 @@
                                         @endif
                                     </td>
                                     <td>{{ $contact->failed_reason }}</td>
-                                    <td>{{ $contact->created_at }}</td>
+
+                                    <td>{{ $trackings->sent_at }}</td>
+                                    <td>{{ $trackings->open_at }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
