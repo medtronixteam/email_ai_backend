@@ -7,11 +7,6 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                       {{-- <div class="avtar avtar-s bg-light-primary">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- SVG content -->
-                            </svg>
-                        </div>  --}}
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <h6 class="mb-0">Total Users</h6>
@@ -32,6 +27,57 @@
             </div>
         </div>
     </div>
+    <div class="col-md-6 col-xxl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="mb-0">Active Plans Users</h6>
+                    </div>
+
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                    <div class="mt-3 row align-items-center">
+                        <div class="col-7">
+                            <div id="page-views-graph"></div>
+                        </div>
+                        <div class="col-5">
+                            <h3 class="mb-1">{{ $activeUsers }}</h3>
+                            <p class="text-primary mb-0"><i class="ti ti-arrow-up-right"></i> 30.6%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xxl-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0">
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="mb-0">Free Plan Users</h6>
+                    </div>
+
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                    <div class="mt-3 row align-items-center">
+                        <div class="col-7">
+                            <div id="total-task-graph"></div>
+                        </div>
+                        <div class="col-5">
+                            <h3 class="mb-1">{{ $freeUsers }}</h3>
+                            <p class="text-primary mb-0"><i class="ti ti-arrow-up-right"></i> 30.6%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
 
     {{-- <div class="col-md-6 col-xxl-3">
         <div class="card">
@@ -80,8 +126,8 @@
                 </div>
             </div>
         </div>
-    </div> --}}
-    {{-- <div class="col-md-6 col-xxl-3">
+    </div> 
+     <div class="col-md-6 col-xxl-3">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center">
@@ -140,8 +186,8 @@
                 </div>
             </div>
         </div>
-    </div> --}}
-    {{-- <div class="col-md-6 col-xxl-3">
+    </div> 
+    <div class="col-md-6 col-xxl-3">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex align-items-center">
@@ -183,7 +229,6 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>  --}}
 
-</div>
 @endsection

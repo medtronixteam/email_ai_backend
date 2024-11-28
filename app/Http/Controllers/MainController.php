@@ -23,7 +23,9 @@ class MainController extends Controller
     public function adminDashboard()
     {
         $totalUsers = User::count();
-    return view('admin.dashboard', compact('totalUsers')); // Pass to view
+        $freeUsers = User::where('user_plan','free')->count();
+        $activeUsers = User::where('user_plan','pro')->count();
+    return view('admin.dashboard', compact('totalUsers','freeUsers','activeUsers'));
     }
 
 

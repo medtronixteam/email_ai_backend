@@ -95,10 +95,10 @@
                         </tbody>
                     </table>
                     
-                    <div class="d-flex justify-content-end mt-3">
+                    {{-- <div class="d-flex justify-content-end mt-3">
                        {{ $users->links() }}
                     </div>
-                    
+                     --}}
 
                         @else
 
