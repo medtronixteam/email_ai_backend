@@ -54,6 +54,7 @@ class CampaignController extends Controller
            $tracking= Tracking::where('campaign_id', $id)->latest()->get();
         }else{
             $tracking =[];  
+            $tracking= Tracking::where('campaign_id', $id)->latest()->get();
         }
         
 
