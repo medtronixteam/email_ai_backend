@@ -7,6 +7,7 @@ use App\Http\Controllers\UserEmailController;
 use App\Models\Campaign;
 use App\Models\Contact;
 use App\Models\Group;
+use App\Models\Tracking;
 use App\Models\UserEmail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -42,6 +43,26 @@ class CampaignController extends Controller
             'completed_campaigns' => $completedCampaigns,
             'pending_campaigns' => $pendingCampaigns,  'data'=> $Campaign,
             'failed_campaigns' => $failedCampaigns,  
+        ];
+
+        return response($response, $response['code']);
+    }
+    public function tracking($id)
+    {
+     
+        if(auth('sanctum')->user()->user_plan != 'free'){
+           $tracking= Tracking::where('campaign_id', $id)->latest()->get();
+        }else{
+            $tracking =[];  
+        }
+        
+
+
+        $response = [
+            'status' => "success",
+            'code' => 200,
+            'current_plan'=>auth('sanctum')->user()->user_plan,
+            'data'=> $tracking,
         ];
 
         return response($response, $response['code']);
