@@ -31,7 +31,6 @@ class MainController extends Controller
 
     public function users()
     {
-      //  $users=User::where('role','user')->get();
         return view('admin.users.user_list');
     }
 
