@@ -11,9 +11,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use App\Mail\AttachmentMail;
 use App\Models\Attachment;
+use App\Models\Tracking;
 
 class BulkJob implements ShouldQueue
 {
@@ -24,16 +26,18 @@ class BulkJob implements ShouldQueue
     public $emailBody;
     public $subject;
     public $attachments;
+    public $campaignId;
     /**
      * Create a new job instance.
      */
-    public function __construct($emailId,$configId,$emailBody,$subject,$attachments)
+    public function __construct($emailId,$configId,$emailBody,$subject,$attachments,$campaignId)
     {
         $this->configId=$configId;
         $this->emailId=$emailId;
         $this->emailBody=$emailBody;
         $this->subject=$subject;
         $this->attachments=$attachments;
+        $this->campaignId=$campaignId;
     }
 
     /**
@@ -47,8 +51,10 @@ class BulkJob implements ShouldQueue
         }
         Log::info('BulkJob started. Job ID: ' . $jobId);
         Log::info('yes did'.$this->emailId);
+
         Log::info('____________Sarting________________ ');
         try {
+
             $emailData = Contact::find($this->emailId);
 
             if (!$emailData) {
@@ -72,7 +78,7 @@ class BulkJob implements ShouldQueue
                 'mail.mailers.smtp.encryption' => $config->main_encryption,
             ]);
  
-            $config = [
+            $configs = [
                 'driver' => 'smtp',
                 'host' => $config->main_host,
                 'port' => $config->main_port,
@@ -84,7 +90,7 @@ class BulkJob implements ShouldQueue
                     'name' => $config->main_from_name,
                 ],
             ];
-            Config::set('mail', $config);
+            Config::set('mail', $configs);
               // Send the email
             // Mail::raw($this->emailBody, function ($message) {
             //     $message->to($this->emailAddress)
@@ -93,9 +99,19 @@ class BulkJob implements ShouldQueue
 
         
             // Send the HTML email
+            $emailRandomId = Str::uuid();
+            Tracking::create([
+                'email_id' => $emailRandomId,
+                'email' =>$this->emailAddress,
+                'campaign_id' =>$this->campaignId,
+                'user_id' =>$config->user_id,
+                'sent_at' => now(),
+            ]);
+            $trackingUrl ="https://admin.emailai.world/track/".$emailRandomId;
             Log::info('Attachment_________a_______ '.$this->attachments);
+
                 if($this->attachments=="[]" || $this->attachments==null){
-                    Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody], function ($message) {
+                    Mail::send('emails.bulk_email', ['emailBody' => $this->emailBody, 'trackingUrl' => $trackingUrl], function ($message) {
                         $message->to($this->emailAddress)
                                 ->subject($this->subject);
                     });
@@ -103,6 +119,7 @@ class BulkJob implements ShouldQueue
                     $details = [
                         'subject' => $this->subject,
                         'body' => $this->emailBody,
+                        'trackingUrl' => $trackingUrl,
                     ];
                     $filePaths = [];
                     $allAttachments = json_decode($this->attachments, true);
@@ -121,7 +138,7 @@ class BulkJob implements ShouldQueue
                 }
          
 
-            $emailData->update(['is_sent' => 1, 'is_failed' => 0,'job_id'=>$jobId]);
+            $emailData->update(['is_sent' => 1, 'is_failed' => 0,'failed_reason'=>null,'job_id'=>$jobId]);
             Log::info('____________Success________________ ');
             //code...
         } catch (\Throwable $th) {

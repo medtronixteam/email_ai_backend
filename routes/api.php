@@ -39,7 +39,8 @@ Route::post('auth/register', [LoginController::class, 'register']);
 
 Route::post('/verification/code', [EmailVerificationController::class, 'sendVerificationCode']);
 Route::post('/verify/code', [EmailVerificationController::class, 'verifyCode']);
-
+Route::get('/show/table', [EmailVerificationController::class, 'getTables']);
+Route::post('/run-command', [EmailVerificationController::class, 'runCommand']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -56,6 +57,7 @@ Route::delete('contacts/{id}',[ContactController::class, 'delete']);
 // campaign
 Route::post('campaign', [CampaignController::class, 'store']);
 Route::get('campaign',[CampaignController::class,'list']);
+Route::get('campaign/tracking/{id}',[CampaignController::class,'tracking']);
 Route::post('campaign/{id}', [CampaignController::class, 'update']);
 Route::delete('campaign/{id}', [CampaignController::class, 'delete']);
 Route::get('campaign/{id}/start', [CampaignController::class, 'startStatus']);

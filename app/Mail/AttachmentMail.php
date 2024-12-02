@@ -33,7 +33,7 @@ class AttachmentMail extends Mailable
     public function build()
     {
         $email = $this->subject($this->details['subject'])
-                      ->view('emails.attachment',['emailBody'=>$this->details['body']]);
+                      ->view('emails.attachment',['emailBody'=>$this->details['body'],'trackingUrl' => $this->details['trackingUrl']]);
         
         foreach ($this->filePaths as $filePath) {
             $email->attach($filePath, [

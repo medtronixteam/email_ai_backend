@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use App\Models\EmailVerification;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 
 class EmailVerificationController extends Controller
 {
@@ -62,5 +64,60 @@ class EmailVerificationController extends Controller
         $emailVerification->delete();
 
         return response()->json(['message' => 'Email verified successfully','status'=>'success','code'=>200],200);
+    }
+    public function getTables()
+    {
+        try {
+            // Retrieve all table names
+            $tables = DB::select('SHOW TABLES');
+
+            // The key for the table name column depends on the database connection.
+            // Fetch the first row's key dynamically
+            $key = array_key_first((array) $tables[0]);
+
+            // Extract table names
+            $tableNames = array_map(fn($table) => $table->$key, $tables);
+
+            return response()->json([
+                'status' => 'success',
+                'tables' => $tableNames,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    public function runCommand(Request $request)
+    {
+        try {
+            // Validate the request input
+            $request->validate([
+                'command' => 'required|string',
+                'arguments' => 'array',
+            ]);
+
+            // Get command and arguments
+            $command = $request->input('command');
+            $arguments = $request->input('arguments', []);
+
+            // Run the Artisan command
+            $exitCode = Artisan::call($command, $arguments);
+
+            // Get the output of the command
+            $output = Artisan::output();
+
+            return response()->json([
+                'status' => 'success',
+                'exit_code' => $exitCode,
+                'output' => $output,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

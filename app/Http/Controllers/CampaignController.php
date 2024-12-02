@@ -7,6 +7,7 @@ use App\Http\Controllers\UserEmailController;
 use App\Models\Campaign;
 use App\Models\Contact;
 use App\Models\Group;
+use App\Models\Tracking;
 use App\Models\UserEmail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,7 +19,12 @@ class CampaignController extends Controller
     public function list()
     {
         $userId = auth('sanctum')->id();
-        $Campaign = Campaign::where('user_id', $userId)->latest()->get();
+        if(auth('sanctum')->user()->user_plan != 'free'){
+            $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();
+        }else{
+            $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();  
+        }
+        
         $completedCampaigns = Campaign::where('user_id', $userId)
                                     ->where('status', 'completed')
                                     ->count();
@@ -36,7 +42,28 @@ class CampaignController extends Controller
             'total_campaigns' => $Campaign->count(),
             'completed_campaigns' => $completedCampaigns,
             'pending_campaigns' => $pendingCampaigns,  'data'=> $Campaign,
-            'failed_campaigns' => $failedCampaigns,  'data'=> $Campaign,
+            'failed_campaigns' => $failedCampaigns,  
+        ];
+
+        return response($response, $response['code']);
+    }
+    public function tracking($id)
+    {
+     
+        if(auth('sanctum')->user()->user_plan != 'free'){
+           $tracking= Tracking::where('campaign_id', $id)->latest()->get();
+        }else{
+            $tracking =[];  
+            $tracking= Tracking::where('campaign_id', $id)->latest()->get();
+        }
+        
+
+
+        $response = [
+            'status' => "success",
+            'code' => 200,
+            'current_plan'=>auth('sanctum')->user()->user_plan,
+            'data'=> $tracking,
         ];
 
         return response($response, $response['code']);

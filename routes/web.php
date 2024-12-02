@@ -52,3 +52,5 @@ Route::post('ticket/open/{ticketId}', [MainController::class, 'ticketopen'])->na
 });
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 Route::get('auth/redirect/google', [GoogleController::class, 'redirectToGoogle']);
+
+Route::get('/track/{emailId}', [App\Http\Controllers\TrackingController::class, 'track'])->name('email.track');
