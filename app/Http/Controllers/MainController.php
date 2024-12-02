@@ -139,15 +139,15 @@ public function store(Request $request)
 
         return redirect()->back()->with('success', 'Ticket closed successfully.');
     }
-    public function ticketopen($ticketId)
-    {
-        $ticket = Ticket::findOrFail($ticketId);
-        $ticket->status = 'open';
-        $ticket->save();
+    // public function ticketopen($ticketId)
+    // {
+    //     $ticket = Ticket::findOrFail($ticketId);
+    //     $ticket->status = 'open';
+    //     $ticket->save();
 
-        return redirect()->back()->with('success', 'Ticket opened successfully.');
+    //     return redirect()->back()->with('success', 'Ticket opened successfully.');
 
-    }
+    // }
 
     public function support()
     {
