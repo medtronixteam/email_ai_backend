@@ -25,6 +25,7 @@ class TempletController extends Controller
     {
         $valid = $request->validate([
             'name' => 'required',
+            'content_number' => 'required',
             'description' => 'required',
             'image' => 'required|image',
         ]);
@@ -32,11 +33,12 @@ class TempletController extends Controller
         $picturePath = null;
         if ($request->hasFile('image')) {
             $picture = $request->file('image');
-            $picturePath = $picture->store('storage', 'public');
+            $picturePath = $picture->store('tamplate', 'public');
         }
     
         $templets = Templet::create([
             'name' => $request->name,
+            'content_number' => $request->content_number,
             'description' => $request->description,
             'image' => $picturePath,
         ]);

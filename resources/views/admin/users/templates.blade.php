@@ -36,8 +36,13 @@
                     <h4 class="text-center mb-4" style="font-weight: bold; color: #f7f8fa;">Add Templates</h4>
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required
+                        <input value="" type="text" class="form-control" id="name" name="name" required
                             placeholder="Enter name here...">
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content Number</label>
+                        <input type="number" class="form-control" id="content_number" name="content_number" required
+                            placeholder="how many contents...">
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
@@ -70,20 +75,28 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Name</th>
+                                <th>Content Number</th>
                                 <th>Image</th>
                                 <th>Created At</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($templets as $templet)
                                 <tr>
                                     <td>{{ $templet->name }}</td>
+                                    <td>{{ $templet->content_number }}</td>
                                     <td>
                                         <img src="{{ asset('storage/' . $templet->image) }}" alt="Template Image"
                                             style="width: 50px; height: 50px;">
                                     </td>
                                     <td>{{ $templet->created_at }}</td>
-
+                                    <td>    
+                                        <a href=""
+                                            class="btn btn-primary">Edit</a>
+                                        <a href=""
+                                            class="btn btn-warning">delete</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
