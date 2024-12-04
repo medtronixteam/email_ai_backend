@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tracking;
+use App\Models\Templet;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,15 +21,12 @@ class TrackingController extends Controller
 
     public function renderTemp(Request $request,$temId)
     {
-        $description=$title='';
+        $tamplate=Templet::find($temId);  $contents=[];
         $title='NEWSLETTER DESIGN';
-        if($request->has('title')){
-            $title=$request->query('title');
-        }
-        if($request->has('description')){
-            $description=$request->query('description');
-        }
        
-        return view('template.simple', compact('description','title'));
+        if($request->has('contents')){
+            $contents=json_decode($request->contents,true);
+        }
+        return view('template.simple', compact('tamplate','contents'));
     }
 }
