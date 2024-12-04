@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\TempletController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,6 +49,9 @@ Route::post('ticket/reply/{messageId}', [MainController::class, 'ticketreply'])-
 Route::get('ticket/support', [MainController::class, 'support'])->name('admin.users.reply');
 Route::post('ticket/closed/{ticketId}', [MainController::class, 'ticketclose'])->name('admin.tickets.close');
 Route::post('ticket/open/{ticketId}', [MainController::class, 'ticketopen'])->name('admin.tickets.open');
+
+Route::get('templets', [TempletController::class, 'templets'])->name('admin.users.templets');
+Route::post('templets/store', [TempletController::class, 'store'])->name('admin.users.templetstore');
 
 });
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);

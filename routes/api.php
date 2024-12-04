@@ -16,6 +16,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TempletController;
 use App\Http\Controllers\EmailVerificationController;
 /*
 
@@ -102,6 +103,7 @@ Route::post('/subscribe', [SubscriptionController::class, 'subscribePlan']);
 
 Route::post('/payment/intent', [PaymentController::class, 'createPaymentIntent']);
 
+Route::get('templates/list', [TempletController::class, 'list']);
 
 
 });
