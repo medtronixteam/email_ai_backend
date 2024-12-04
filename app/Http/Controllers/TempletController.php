@@ -9,7 +9,7 @@ class TempletController extends Controller
    
     public function list(){
 
-        $templates= Templet::all();
+        $templates= Templet::select('id','name','image')->get();
         $response=['status'=>"success",'code'=>200,'data'=>$templates];
         return response($response,$response['code']);
      }
