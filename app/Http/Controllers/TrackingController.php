@@ -23,9 +23,8 @@ class TrackingController extends Controller
     {
         $tamplate=Templet::find($temId);  $contents=[];
         $title='NEWSLETTER DESIGN';
-       
         if($request->has('contents')){
-            $contents=json_decode($request->contents,true);
+            $contents=json_decode($request->query('contents'),true)?json_decode($request->query('contents'),true):[];
         }
         return view('template.simple', compact('tamplate','contents'));
     }
