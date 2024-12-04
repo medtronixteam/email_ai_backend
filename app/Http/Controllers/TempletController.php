@@ -33,7 +33,7 @@ class TempletController extends Controller
         $picturePath = null;
         if ($request->hasFile('image')) {
             $picture = $request->file('image');
-            $picturePath = $picture->store('tamplate', 'public');
+            $picturePath = $picture->store('template', 'public');
         }
     
         $templets = Templet::create([
