@@ -52,7 +52,9 @@ Route::post('ticket/open/{ticketId}', [MainController::class, 'ticketopen'])->na
 
 Route::get('templets', [TempletController::class, 'templets'])->name('admin.users.templets');
 Route::post('templets/store', [TempletController::class, 'store'])->name('admin.users.templetstore');
-
+Route::get('edittemplete/{id}', [TempletController::class, 'edit'])->name('admin.users.templetedit');
+Route::post('templetupdate/{id}', [TempletController::class, 'update'])->name('admin.users.templetupdate');
+Route::post('/admin/template/delete/{templateId}', [TempletController::class, 'delete'])->name('admin.users.delete');
 });
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 Route::get('auth/redirect/google', [GoogleController::class, 'redirectToGoogle']);

@@ -44,5 +44,38 @@ class TempletController extends Controller
         ]);
         return redirect()->back()->with('success', 'Template created successfully!');
     }
+    public function edit($id)
+    {
+        $templet = Templet::findOrFail($id);
+        return view('admin.users.edittemplete', compact('templet'));
+    }
+    public function update(Request $request, $id)
+    {
+        $templet = Templet::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'content_number' => 'required|integer',
+            'description' => 'nullable|string',
+            'image' => 'required|image',
+        ]);
+        $templet->name = $request->name;
+        $templet->content_number = $request->content_number;
+        $templet->description = $request->description;
     
+    
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('templets', 'public');
+            $templet->image = $imagePath;
+        }
+    
+        $templet->save();
+    
+        return redirect()->route('admin.users.templets', $templet->id)->with('success', 'Template updated successfully!');
+    }
+        public function delete($templateId)
+        {
+            $templet = Templet::findOrFail($templateId);
+            $templet->delete();
+            return redirect()->route('admin.users.templets')->with('success', 'Template deleted successfully!');
+        }
 }

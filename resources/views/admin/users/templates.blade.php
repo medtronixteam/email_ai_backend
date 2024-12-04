@@ -92,9 +92,9 @@
                                     </td>
                                     <td>{{ $templet->created_at }}</td>
                                     <td>    
-                                        <a href=""
+                                        <a href="{{ route('admin.users.templetedit', $templet->id) }}"
                                             class="btn btn-primary">Edit</a>
-                                        <a href=""
+                                        <a href="javascript:void(0)" onclick="confirmdelete({{ $templet->id }})"
                                             class="btn btn-warning">delete</a>
                                     </td>
                                 </tr>
@@ -106,3 +106,40 @@
         </div>
     </div>
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="{{ url('assets/js/plugins/dataTables.min.js') }}"></script>
+<script src="{{ url('assets/js/plugins/dataTables.bootstrap5.min.js') }}"></script>
+<script>
+      function confirmdelete(templateId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to delete this template?",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'admin/template/delete/' + templateId,
+                        method: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function() {
+                            Swal.fire(
+                                'deleted!',
+                                'User has been deleted.',
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            })
+        }
+</script>
