@@ -17,4 +17,18 @@ class TrackingController extends Controller
         $image = Storage::disk('local')->get('pixel.png'); // Store this image in `storage/app/pixel.png`
         return response($image)->header('Content-Type', 'image/png');
     }
+
+    public function renderTemp(Request $request,$temId)
+    {
+        $description=$title='';
+        $title='NEWSLETTER DESIGN';
+        if($request->has('title')){
+            $title=$request->query('title');
+        }
+        if($request->has('description')){
+            $description=$request->query('description');
+        }
+       
+        return view('template.simple', compact('description','title'));
+    }
 }
