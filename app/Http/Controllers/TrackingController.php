@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\TemplateContent;
 use App\Models\Tracking;
 use App\Models\Templet;
 use Illuminate\Support\Facades\Log;
@@ -26,6 +27,19 @@ class TrackingController extends Controller
         if($request->has('contents')){
             $contents=json_decode($request->query('contents'),true)?json_decode($request->query('contents'),true):[];
         }
+        return view('template.simple', compact('tamplate','contents'));
+    }
+    public function Temp(Request $request,$token,$temId)
+    {
+        $tamplate=Templet::findOrFail($temId);
+        $tamplateContent=TemplateContent::where('token',$token)->where('template_id',$temId)->first();
+        if($tamplateContent==null){
+            abort(404);
+        }
+          $contents=[];
+      
+        $contents=json_decode($tamplateContent->contents,true)?json_decode($tamplateContent->contents,true):[];
+    
         return view('template.simple', compact('tamplate','contents'));
     }
 }

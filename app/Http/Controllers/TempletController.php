@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TemplateContent;
 use Illuminate\Http\Request;
+use Validator;
 use App\Models\Templet;
+use Illuminate\Support\Str;
+
 class TempletController extends Controller
 {
    
@@ -20,7 +24,51 @@ class TempletController extends Controller
         $templets = Templet::all();
         return view('admin.users.templates', compact('templets'));
     }
+    public function content(Request $request)
+    {
+   
+        $validator = Validator::make($request->all(), [
+            'contents' => 'required',
+            'template_id' => 'required|exists:templets,id',
 
+        ]);
+        if ($validator->fails()) {
+            $messages = $validator->messages()->first();
+            $response = ['message' => $messages,
+                'status' => 'error', 'code' => 500];
+            return response($response, $response['code']);
+        }
+           $contents= json_decode($request->contents,true);
+
+          if(!is_array($contents)){
+           
+            $response = ['message' => "Contents is not a valid array",
+            'status' => 'error', 'code' => 500];
+            return response($response, $response['code']);
+
+          }
+          $token=Str::random(30);
+          TemplateContent::updateOrCreate([
+            'template_id'   => $request->template_id,
+            'user_id'   => auth('sanctum')->id(),
+            ],[
+                'contents' =>$request->contents,
+                'token' =>$token,
+            ]);
+          $template=Templet::find($request->template_id);
+       
+          $other=str_replace(array_keys($contents),array_values($contents), $template->description);
+        $response = [
+            'message'=>"Template Updated  Successfully.",
+            'template'=>$other,
+            'token'=>$token,
+            'status'=>'success',
+            'code'=>200,
+
+        ];
+    
+    return response($response, $response['code']);
+    }
     public function store(Request $request)
     {
         $valid = $request->validate([

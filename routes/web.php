@@ -61,3 +61,4 @@ Route::get('auth/redirect/google', [GoogleController::class, 'redirectToGoogle']
 
 Route::get('/track/{emailId}', [App\Http\Controllers\TrackingController::class, 'track'])->name('email.track');
 Route::get('/template/{temId}', [App\Http\Controllers\TrackingController::class, 'renderTemp'])->name('email.temp');
+Route::get('/template/{token}/{temId}', [App\Http\Controllers\TrackingController::class, 'Temp'])->name('render.temp');

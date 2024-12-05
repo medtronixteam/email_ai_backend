@@ -104,6 +104,7 @@ Route::post('/subscribe', [SubscriptionController::class, 'subscribePlan']);
 Route::post('/payment/intent', [PaymentController::class, 'createPaymentIntent']);
 
 Route::get('templates/list', [TempletController::class, 'list']);
+Route::post('templates/content', [TempletController::class, 'content']);
 
 
 });
