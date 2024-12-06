@@ -30,6 +30,8 @@ RUN composer install --no-dev --optimize-autoloader --prefer-dist
 # Ensure the storage and bootstrap/cache directories are writable
 RUN chown -R www-data:www-data storage bootstrap/cache
 
+
+
 # Expose port 8000 for the application
 EXPOSE 8000
 
