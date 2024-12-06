@@ -106,6 +106,7 @@ class BulkJob implements ShouldQueue
                 'campaign_id' =>$this->campaignId,
                 'user_id' =>$config->user_id,
                 'sent_at' => now(),
+                
             ]);
             $trackingUrl ="https://admin.emailai.world/track/".$emailRandomId;
             Log::info('Attachment_________a_______ '.$this->attachments);
@@ -144,7 +145,7 @@ class BulkJob implements ShouldQueue
         } catch (\Throwable $th) {
 
             $emailData->update(['is_sent' => 0, 'is_failed' => 1,'job_id'=>$jobId,'failed_reason'=>$th->getMessage()]);
-            Log::error('Mail failed to send. Error: ' . $th->getMessage());
+            Log::error('Ops Mail failed to send. Error: ' . $th->getMessage());
         }
     }
 }
