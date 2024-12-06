@@ -26,7 +26,7 @@ jobs:
           cd ..
           sudo docker compose build backend
           sudo docker compose up backend -d
-          docker exec -it contact-backend-1 sh -c "sleep 60 && php artisan migrate --seed --force"          
+          docker exec  contact-backend-1 sh -c "sleep 60 && php artisan migrate --seed --force"          
           exit
         EOF
 
