@@ -80,7 +80,8 @@ class CampaignController extends Controller
             'email_host' => 'required|in:gmail_password,email,gmail_auth',
             'campaign_time' => 'required|date_format:H:i',
             'campaign_date' => 'required|date_format:Y-m-d',
-            'intervals' => 'required',
+            'interval_time' => 'required',
+            'interval_mails' => 'required',
         ]);
         if ($validator->fails()) {
 
