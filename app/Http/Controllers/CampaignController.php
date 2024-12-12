@@ -80,6 +80,7 @@ class CampaignController extends Controller
             'email_host' => 'required|in:gmail_password,email,gmail_auth',
             'campaign_time' => 'required|date_format:H:i',
             'campaign_date' => 'required|date_format:Y-m-d',
+            'intervals' => 'required',
         ]);
         if ($validator->fails()) {
 
@@ -179,8 +180,8 @@ class CampaignController extends Controller
         }
         if ($campaign->status !== 'started') {
             $campaign->status = 'pending';
-            $campaign->campaign_time = Carbon::now()->format('H:i:s')->timezone(auth('sanctum')->user()->timezone);
-            $campaign->campaign_date = Carbon::now()->format('Y-m-d')->timezone(auth('sanctum')->user()->timezone);
+            $campaign->campaign_time = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('H:i:s');
+            $campaign->campaign_date = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('Y-m-d');
             Contact::where('group_id',$campaign->group_id)->update(['is_sent' => 0]);
             $emailController = new UserEmailController();
             $emailController->updateSmtpSettings($campaign->id);
@@ -197,17 +198,16 @@ class CampaignController extends Controller
             return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
         }
         if ($campaign->status !== 'started') {
-            $campaign->status = 'pending';
-            $campaign->campaign_time = Carbon::now()->format('H:i:s')->timezone(auth('sanctum')->user()->timezone);
-            $campaign->campaign_date = Carbon::now()->format('Y-m-d')->timezone(auth('sanctum')->user()->timezone);
+            $campaign->status = 'pending';            
+            $campaign->campaign_time = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('H:i:s');
+            $campaign->campaign_date = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('Y-m-d');
             $emailController = new UserEmailController();
             $emailController->updateSmtpSettings($campaign->id);
             $campaign->save();
         }
 
-        return response(['message' => 'Campaign status updated', 'status' => 'success', 'code' => 200]);
-
-    }
+        return response(['message' => 'Campaign status updated', 'status' => 'success', 'code' =>200]);
+}
 
     public function stopstatus($id)
     {
