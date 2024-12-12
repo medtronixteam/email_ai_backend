@@ -179,8 +179,8 @@ class CampaignController extends Controller
         }
         if ($campaign->status !== 'started') {
             $campaign->status = 'pending';
-            $campaign->campaign_time = Carbon::now()->format('H:i:s');
-            $campaign->campaign_date = Carbon::now()->format('Y-m-d');
+            $campaign->campaign_time = Carbon::now()->format('H:i:s')->timezone(auth('sanctum')->user()->timezone);
+            $campaign->campaign_date = Carbon::now()->format('Y-m-d')->timezone(auth('sanctum')->user()->timezone);
             Contact::where('group_id',$campaign->group_id)->update(['is_sent' => 0]);
             $emailController = new UserEmailController();
             $emailController->updateSmtpSettings($campaign->id);
@@ -190,6 +190,24 @@ class CampaignController extends Controller
         return response(['message' => 'Campaign status updated', 'status' => 'success', 'code' => 200]);
 
     }
+    public function unsentResend($id)
+    {
+        $campaign = Campaign::find($id);
+        if (!$campaign) {
+            return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
+        }
+        if ($campaign->status !== 'started') {
+            $campaign->status = 'pending';
+            $campaign->campaign_time = Carbon::now()->format('H:i:s')->timezone(auth('sanctum')->user()->timezone);
+            $campaign->campaign_date = Carbon::now()->format('Y-m-d')->timezone(auth('sanctum')->user()->timezone);
+            $emailController = new UserEmailController();
+            $emailController->updateSmtpSettings($campaign->id);
+            $campaign->save();
+        }
+
+        return response(['message' => 'Campaign status updated', 'status' => 'success', 'code' => 200]);
+
+    }
 
     public function stopstatus($id)
     {

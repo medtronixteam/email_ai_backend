@@ -62,6 +62,7 @@ Route::get('campaign/tracking/{id}',[CampaignController::class,'tracking']);
 Route::post('campaign/{id}', [CampaignController::class, 'update']);
 Route::delete('campaign/{id}', [CampaignController::class, 'delete']);
 Route::get('campaign/{id}/start', [CampaignController::class, 'startStatus']);
+Route::get('campaign/{id}/unsentResend', [CampaignController::class, 'unsentResend']);
 Route::get('campaign/{id}/stop', [CampaignController::class, 'stopStatus']);
 
 // Users
