@@ -139,12 +139,12 @@ class BulkJob implements ShouldQueue
                 }
          
 
-            $emailData->update(['is_sent' => 1, 'is_failed' => 0,'failed_reason'=>null,'job_id'=>$jobId]);
+            $emailData->update(['is_sent' => 1, 'is_failed' => 0,'failed_reason'=>null]);
             Log::info('____________Success________________ ');
             //code...
         } catch (\Throwable $th) {
 
-            $emailData->update(['is_sent' => 0, 'is_failed' => 1,'job_id'=>$jobId,'failed_reason'=>$th->getMessage()]);
+            $emailData->update(['is_sent' => 0, 'is_failed' => 1,'failed_reason'=>$th->getMessage()]);
             Log::error('Ops Mail failed to send. Error: ' . $th->getMessage());
         }
     }
