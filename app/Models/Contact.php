@@ -14,5 +14,9 @@ class Contact extends Model
 {
     return $this->belongsTo(Campaign::class);
 }
+public function group()
+{
+    return $this->belongsTo(Group::class);
+}
 
 }
