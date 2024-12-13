@@ -55,10 +55,13 @@ class SendCampaignEmails extends Command
        // $getContact = Group::join('contacts', 'groups.id', '=', 'contacts.group_id')->where('groups.id', $campaign->group_id)->where('contacts.job_id',null);
       //  $CountFailed = Group::join('contacts', 'groups.id', '=', 'contacts.group_id')->where('groups.id', $campaign->group_id)->where('contacts.job_id','!=',null)->where('contacts.is_failed',1)->count();
             $CountFailed=Contact::where('group_id',$campaign->group_id)->where('is_failed',1)->where('job_id','!=',null)->count();
-            $getContact=Contact::where('group_id',$campaign->group_id)->where('job_id','=',null);
-            if($getContact->count() == 0){
-                $campaign->update(['status' => 'completed','failed_reason'=>$CountFailed.' Emails Failed to send']);
+            $getContact=Contact::where('group_id',$campaign->group_id)->where('is_failed',1)->where('is_sent',0);
+            if($getContact->count() > 0){
+                $campaign->update(['status' => 'failed','failed_reason'=>$CountFailed.' Emails Failed to send']);
                 $getContact->update(['job_id' => null]);
+            }else{
+                $campaign->update(['status' => 'completed','failed_reason'=>null]);
+                $getContact->update(['job_id' => null]);   
             }
         }
 
