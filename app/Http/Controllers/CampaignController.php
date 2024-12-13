@@ -19,34 +19,23 @@ class CampaignController extends Controller
     public function list()
     {
         $userId = auth('sanctum')->id();
+        $campaigns=[];
         if(auth('sanctum')->user()->user_plan != 'free'){
-           $Campaign = Campaign::with(['tracking' => function ($query) {
-                $query->withCount([
-                    'contacts as sent_count' => function ($query) {
-                        $query->where('is_sent', 1)->where('is_failed', 0);
-                    },
-                    'contacts as not_sent_count' => function ($query) {
-                        $query->where('is_sent', 0)->where('is_failed', 1);
-                    },
-                ]);
-            }])
-                ->where('user_id', $userId)
-                ->latest()
-                ->get();
+          //  $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();
         }else{
-           $Campaign = Campaign::with(['tracking' => function ($query) {
-                $query->withCount([
-                    'contacts as sent_count' => function ($query) {
-                        $query->where('is_sent', 1)->where('is_failed', 0);
-                    },
-                    'contacts as not_sent_count' => function ($query) {
-                        $query->where('is_sent', 0)->where('is_failed', 1);
-                    },
-                ]);
-            }])
-                ->where('user_id', $userId)
-                ->latest()
-                ->get();  
+           //$Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();  
+
+            
+        }
+        $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();  
+
+        foreach ($Campaign as $key=> $cam) {
+         //   $group=Group::where('id', $cam->group_id)->first();
+            $sentContact=Contact::where('group_id', $cam->group_id)->where('is_sent', 1)->where('is_failed', 0)->count();
+            $unSentcontact=Contact::where('group_id', $cam->group_id)->where('is_sent', 0)->where('is_failed', 1)->count();
+            $campaigns[$key]=$cam;
+            $campaigns[$key]['sent_mails']=$sentContact;
+            $campaigns[$key]['unsent_mails']=$unSentcontact;
         }
         
         $completedCampaigns = Campaign::where('user_id', $userId)
@@ -65,7 +54,7 @@ class CampaignController extends Controller
             'code' => 200,
             'total_campaigns' => $Campaign->count(),
             'completed_campaigns' => $completedCampaigns,
-            'pending_campaigns' => $pendingCampaigns,  'data'=> $Campaign,
+            'pending_campaigns' => $pendingCampaigns,  'data'=> $campaigns,
             'failed_campaigns' => $failedCampaigns,  
         ];
 

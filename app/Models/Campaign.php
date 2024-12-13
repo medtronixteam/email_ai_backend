@@ -11,10 +11,6 @@ class Campaign extends Model
     protected $guarded = ['id'];
 
 
-    public function group()
-    {
-        return $this->belongsTo(Group::class);
-    }
 
     public function user()
     {
