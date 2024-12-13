@@ -10,6 +10,10 @@ class Group extends Model
     use HasFactory;
     protected $guarded=['id'];
 
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class);
+    }   
     public function contacts(){
         return $this->hasMany(Contact::class);
     }

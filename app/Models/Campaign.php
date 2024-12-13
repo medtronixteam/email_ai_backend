@@ -24,5 +24,10 @@ class Campaign extends Model
     {
         return $this->hasMany(Tracking::class,'campaign_id','id');
     }
+
+    public function tracking()
+    {
+        return $this->hasMany(Tracking::class,'campaign_id','id');
+    }
  
 }
