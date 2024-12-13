@@ -19,73 +19,48 @@ class CampaignController extends Controller
     public function list()
     {
         $userId = auth('sanctum')->id();
-        if (auth('sanctum')->user()->user_plan != 'free') {
-            $Campaign = Campaign::with(['tracking' => function ($query) {
-                $query->withCount([
-                    'contacts as sent_count' => function ($query) {
-                        $query->where('sent', 1)->where('is_failed', 0);
-                    },
-                    'contacts as not_sent_count' => function ($query) {
-                        $query->where('is_sent', 0)->where('is_failed', 1);
-                    },
-                ]);
-            }])
-                ->where('user_id', $userId)
-                ->latest()
-                ->get();
-
-        } else {
-            $Campaign = Campaign::with(['tracking' => function ($query) {
-                $query->withCount([
-                    'contacts as sent_count' => function ($query) {
-                        $query->where('sent', 1)->where('is_failed', 0);
-                    },
-                    'contacts as not_sent_count' => function ($query) {
-                        $query->where('is_sent', 0)->where('is_failed', 1);
-                    },
-                ]);
-            }])
-                ->where('user_id', $userId)
-                ->latest()
-                ->get();
-
+        if(auth('sanctum')->user()->user_plan != 'free'){
+            $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();
+        }else{
+            $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();  
         }
-
+        
         $completedCampaigns = Campaign::where('user_id', $userId)
-            ->where('status', 'completed')
-            ->count();
+                                    ->where('status', 'completed')
+                                    ->count();
         $pendingCampaigns = Campaign::where('user_id', $userId)
-            ->where('status', 'pending')
-            ->count();
+                                    ->where('status', 'pending')
+                                    ->count();
         $failedCampaigns = Campaign::where('user_id', $userId)
-            ->where('status', 'failed')
-            ->count();
+                                    ->where('status', 'failed')
+                                    ->count();
+
 
         $response = [
             'status' => "success",
             'code' => 200,
             'total_campaigns' => $Campaign->count(),
             'completed_campaigns' => $completedCampaigns,
-            'pending_campaigns' => $pendingCampaigns, 'data' => $Campaign,
-            'failed_campaigns' => $failedCampaigns,
+            'pending_campaigns' => $pendingCampaigns,  'data'=> $Campaign,
+            'failed_campaigns' => $failedCampaigns,  
         ];
 
         return response($response, $response['code']);
     }
     public function tracking($id)
     {
-
-        if (auth('sanctum')->user()->user_plan != 'free') {
-            $tracking = Tracking::where('campaign_id', $id)->latest()->get();
-        } else {
-            $tracking = [];
-            $tracking = Tracking::where('campaign_id', $id)->latest()->get();
+     
+        if(auth('sanctum')->user()->user_plan != 'free'){
+           $tracking= Tracking::where('campaign_id', $id)->latest()->get();
+        }else{
+            $tracking =[];  
+            $tracking= Tracking::where('campaign_id', $id)->latest()->get();
         }
         $response = [
             'status' => "success",
             'code' => 200,
-            'current_plan' => auth('sanctum')->user()->user_plan,
-            'data' => $tracking,
+            'current_plan'=>auth('sanctum')->user()->user_plan,
+            'data'=> $tracking,
         ];
 
         return response($response, $response['code']);
@@ -154,12 +129,13 @@ class CampaignController extends Controller
                 ];
                 return response($response, $response['code']);
             }
-
-            $attachments = null;
-            if ($request->attachments != "[]") {
-                $attachments = $request->attachments;
+           
+            $attachments=null;
+            if($request->attachments!="[]"){
+               $attachments=$request->attachments;
             }
 
+          
             $campaign = Campaign::create([
                 'name' => $request->name,
                 'group_id' => $request->group_id,
@@ -176,7 +152,7 @@ class CampaignController extends Controller
                 if ($request->email_host == 'gmail_auth') {
                     $googleController = new GoogleController();
                     $googleController->sendGmails($campaign->id);
-                } else {
+                }else{
                     $emailController = new UserEmailController();
                     $emailController->updateSmtpSettings($campaign->id);
                 }
@@ -204,7 +180,7 @@ class CampaignController extends Controller
             $campaign->status = 'pending';
             $campaign->campaign_time = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('H:i:s');
             $campaign->campaign_date = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('Y-m-d');
-            Contact::where('group_id', $campaign->group_id)->update(['is_sent' => 0]);
+            Contact::where('group_id',$campaign->group_id)->update(['is_sent' => 0]);
             $emailController = new UserEmailController();
             $emailController->updateSmtpSettings($campaign->id);
             $campaign->save();
@@ -220,7 +196,7 @@ class CampaignController extends Controller
             return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
         }
         if ($campaign->status !== 'started') {
-            $campaign->status = 'pending';
+            $campaign->status = 'pending';            
             $campaign->campaign_time = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('H:i:s');
             $campaign->campaign_date = Carbon::now()->setTimezone(auth('sanctum')->user()->timezone)->format('Y-m-d');
             $emailController = new UserEmailController();
@@ -228,8 +204,8 @@ class CampaignController extends Controller
             $campaign->save();
         }
 
-        return response(['message' => 'Campaign status updated', 'status' => 'success', 'code' => 200]);
-    }
+        return response(['message' => 'Campaign status updated', 'status' => 'success', 'code' =>200]);
+}
 
     public function stopstatus($id)
     {
@@ -252,37 +228,38 @@ class CampaignController extends Controller
         return response(['message' => 'Campaign has been stopped', 'stopped_mails' => $counter, 'status' => 'success', 'code' => 200]);
     }
 
-    public function update(Request $request, $id)
-    {
-        $campaign = Campaign::find($id);
+public function update(Request $request, $id)
+{
+    $campaign = Campaign::find($id);
 
-        if (!$campaign) {
-            return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
-        }
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'group_id' => 'required',
-            'message' => 'required',
-            'subject' => 'required',
-            'email_host' => 'required|in:gmail_password,email,gmail_auth',
-            'campaign_time' => 'required|date_format:H:i',
-            'campaign_date' => 'required|date_format:Y-m-d',
-        ]);
-
-        if ($validator->fails()) {
-            return response(['message' => $validator->messages()->first(), 'status' => 'error', 'code' => 500]);
-        }
-        $campaign->name = $request->name;
-        $campaign->group_id = $request->group_id;
-        $campaign->message = $request->message;
-        $campaign->subject = $request->subject;
-        $campaign->email_host = $request->email_host;
-        $campaign->campaign_time = $request->campaign_time;
-        $campaign->campaign_date = $request->campaign_date;
-        $campaign->save();
-
-        return response(['message' => 'Campaign has been updated', 'status' => 'success', 'code' => 200]);
+    if (!$campaign) {
+        return response(['message' => 'Campaign not found', 'status' => 'error', 'code' => 404]);
     }
+    $validator = Validator::make($request->all(), [
+        'name' => 'required',
+        'group_id' => 'required',
+        'message' => 'required',
+        'subject' => 'required',
+        'email_host' => 'required|in:gmail_password,email,gmail_auth',
+        'campaign_time' => 'required|date_format:H:i',
+        'campaign_date' => 'required|date_format:Y-m-d',
+    ]);
+
+    if ($validator->fails()) {
+        return response(['message' => $validator->messages()->first(), 'status' => 'error', 'code' => 500]);
+    }
+    $campaign->name = $request->name;
+    $campaign->group_id = $request->group_id;
+    $campaign->message = $request->message;
+    $campaign->subject = $request->subject;
+    $campaign->email_host = $request->email_host;
+    $campaign->campaign_time = $request->campaign_time;
+    $campaign->campaign_date = $request->campaign_date;
+    $campaign->save();
+
+    return response(['message' => 'Campaign has been updated', 'status' => 'success', 'code' => 200]);
+}
+
 
     public function delete($id)
     {
@@ -296,10 +273,11 @@ class CampaignController extends Controller
         $campaign->delete();
         return response(['message' => 'Campaign has been deleted', 'status' => 'success', 'code' => 200]);
     }
-    public function convertToUserTimezone($timestamp, $timezone = null)
+        function convertToUserTimezone($timestamp, $timezone = null)
     {
         $timezone = $timezone ?: config('app.timezone');
         return Carbon::parse($timestamp)->setTimezone($timezone);
     }
+
 
 }
