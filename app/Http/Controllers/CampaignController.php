@@ -20,9 +20,33 @@ class CampaignController extends Controller
     {
         $userId = auth('sanctum')->id();
         if(auth('sanctum')->user()->user_plan != 'free'){
-            $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();
+           $Campaign = Campaign::with(['tracking' => function ($query) {
+                $query->withCount([
+                    'contacts as sent_count' => function ($query) {
+                        $query->where('is_sent', 1)->where('is_failed', 0);
+                    },
+                    'contacts as not_sent_count' => function ($query) {
+                        $query->where('is_sent', 0)->where('is_failed', 1);
+                    },
+                ]);
+            }])
+                ->where('user_id', $userId)
+                ->latest()
+                ->get();
         }else{
-            $Campaign = Campaign::with('tracking')->where('user_id', $userId)->latest()->get();  
+           $Campaign = Campaign::with(['tracking' => function ($query) {
+                $query->withCount([
+                    'contacts as sent_count' => function ($query) {
+                        $query->where('is_sent', 1)->where('is_failed', 0);
+                    },
+                    'contacts as not_sent_count' => function ($query) {
+                        $query->where('is_sent', 0)->where('is_failed', 1);
+                    },
+                ]);
+            }])
+                ->where('user_id', $userId)
+                ->latest()
+                ->get();  
         }
         
         $completedCampaigns = Campaign::where('user_id', $userId)
