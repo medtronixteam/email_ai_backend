@@ -109,13 +109,14 @@ class UserEmailController extends Controller
                 if ($emails->count() > 0) {
                     $compains->update(['status' => 'started']);
 
-                    $chunkSize = $compains->interval_mails; // Number of emails per batch
-                    $delayInterval = $compains->interval_time; // Delay interval in minutes
+                    $chunkSize = $compains->interval_mails; 
+                    $delayInterval = $compains->interval_time; 
 
-                    // Chunk emails into batches of 100
+                    // Chunk emails into batches 
                     $emails->chunk($chunkSize)->each(function ($emailBatch, $batchIndex) use ($configData, $compains, $delayInterval) {
+                        
                         // Calculate delay for this batch
-                        $delay = now()->addMinutes($batchIndex * $delayInterval);
+                        $delay = now()->setTimezone($compains->user->timezone)->addMinutes($batchIndex * $delayInterval);
                         foreach ($emailBatch as $email) {
 
                             Log::info("Sending Job for email" . $email->email);
